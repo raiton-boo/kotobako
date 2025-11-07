@@ -120,27 +120,45 @@
 
 ### カラーパレット
 
-```css
-/* Primary Colors */
---color-primary: #6366f1; /* Indigo - アクセントカラー */
---color-primary-light: #818cf8;
---color-primary-dark: #4f46e5;
+**目に優しいパステル系カラー:**
 
-/* Background */
---color-bg-main: #fafafa; /* メイン背景 */
---color-bg-gradient-start: #fafafa;
---color-bg-gradient-end: #f0f4ff;
+- **プライマリカラー**: `#a78bfa` (優しいパープル)
+- **プライマリライト**: `#c4b5fd` (淡いパープル)
+- **プライマリダーク**: `#8b5cf6` (濃いパープル)
 
-/* Card & Surface */
---color-card-bg: #ffffff;
---color-card-border: #e5e7eb;
---color-card-shadow: rgba(0, 0, 0, 0.05);
+**背景色:**
 
-/* Text */
---color-text-primary: #1f2937;
---color-text-secondary: #6b7280;
---color-text-muted: #9ca3af;
-```
+- **メイン背景**: `#faf8f5` (ベージュ系、目に優しい)
+- **カード背景**: `#ffffff` (白)
+
+**テキストカラー:**
+
+- **メイン**: `#2d3748` (柔らかい黒)
+- **セカンダリ**: `#718096` (グレー)
+- **ミュート**: `#a0aec0` (淡いグレー)
+
+### フォント
+
+**UI 全体:**
+
+- `M PLUS Rounded 1c` (丸ゴシック、優しくて読みやすい)
+- ウェイト: 400 (通常), 700 (太字)
+
+**セリフ表示:**
+
+- `Zen Maru Gothic` (丸ゴシック、太字でインパクト)
+- ウェイト: 700 (太字のみ)
+- フォントサイズ: 28px-36px (デバイスに応じて)
+
+### デザインコンセプト
+
+**モダンで丸みを帯びた優しいデザイン:**
+
+- すべての要素に `border-radius: 1rem` 以上の丸み
+- カードは `rounded-2xl` (1.5rem)
+- ボタンは `rounded-full` (完全な円形)
+- 柔らかいシャドウとホバーエフェクト
+- アニメーション: `transform`, `scale`, `shadow` の変化
 
 ### レイアウト構成
 
