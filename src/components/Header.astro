@@ -1,36 +1,26 @@
 ---
 ---
 
-<header class="bg-white shadow-sm sticky top-0 z-50 rounded-b-2xl">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-16">
-      <a
-        href="/kotobako"
-        class="text-2xl font-bold"
-        style="color: #a78bfa;"
-      >
-        ことば箱
+<header class="bg-white shadow-sm sticky top-0 z-40">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="flex items-center justify-between">
+      <a href="/kotobako" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+        <span class="text-4xl">💬</span>
+        <div>
+          <h1 class="text-2xl font-bold" style="color: #2d3748;">ことば箱</h1>
+          <p class="text-sm" style="color: #a0aec0;">セリフコレクション</p>
+        </div>
       </a>
-
-      <!-- 検索ボックス（デスクトップ） -->
-      <div class="hidden md:block flex-1 max-w-md mx-8">
-        <input
-          type="search"
-          placeholder="セリフを検索..."
-          class="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2"
-          style="border-color: #c4b5fd; --tw-ring-color: #a78bfa;"
-        />
-      </div>
-    </div>
-
-    <!-- 検索ボックス（モバイル） -->
-    <div class="md:hidden pb-4">
-      <input
-        type="search"
-        placeholder="セリフを検索..."
-        class="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2"
-        style="border-color: #c4b5fd; --tw-ring-color: #a78bfa;"
-      />
+      
+      <nav class="flex gap-4">
+        <a 
+          href="/kotobako" 
+          class="px-4 py-2 rounded-full hover:bg-gray-100 transition-all duration-200"
+          style="color: #718096;"
+        >
+          🏠 ホーム
+        </a>
+      </nav>
     </div>
   </div>
 </header>

@@ -1,0 +1,196 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import CategoryNav from '../../components/CategoryNav.astro';
+import SerifuCard from '../../components/SerifuCard.astro';
+import SearchBar from '../../components/SearchBar.astro';
+import FavoriteNotice from '../../components/FavoriteNotice.astro';
+import categoriesData from '../../data/categories.json';
+
+interface Serifu {
+  id: string;
+  text: string;
+  featured: boolean;
+  createdAt: string;
+}
+
+interface Category {
+  id: string;
+  name: string;
+  icon: string;
+  description: string;
+  serifu: Serifu[];
+}
+
+interface CategoriesData {
+  categories: Category[];
+}
+
+export async function getStaticPaths() {
+  const { categories } = categoriesData as CategoriesData;
+  
+  return categories.map((category) => ({
+    params: { slug: category.id },
+    props: { category },
+  }));
+}
+
+const { slug } = Astro.params;
+const { category } = Astro.props;
+
+const title = `${category.icon} ${category.name} - ことば箱`;
+const description = category.description;
+---
+
+<Layout title={title} description={description}>
+  <FavoriteNotice />
+  <Header />
+  
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex gap-8">
+      <CategoryNav />
+      
+      <main class="flex-1 min-w-0">
+        <!-- パンくずリスト -->
+        <nav class="mb-6 text-sm" style="color: #a0aec0;">
+          <a href="/kotobako" class="hover:underline">ホーム</a>
+          <span class="mx-2">/</span>
+          <span style="color: #718096;">{category.icon} {category.name}</span>
+        </nav>
+
+        <div class="mb-8">
+          <h1 class="text-3xl font-bold mb-2" style="color: #2d3748;">
+            {category.icon} {category.name}
+          </h1>
+          <p class="text-lg" style="color: #718096;">
+            {category.description}
+          </p>
+          <p class="text-sm mt-2" style="color: #a0aec0;">
+            全 {category.serifu.length} 件
+          </p>
+        </div>
+
+        <SearchBar categoryName={category.name} />
+        
+        {category.serifu.length > 0 ? (
+          <div id="serifu-list" class="grid gap-6 grid-cols-1 lg:grid-cols-2">
+            {category.serifu.map((serifu) => (
+              <div data-category={category.id} data-text={serifu.text.toLowerCase()}>
+                <SerifuCard
+                  id={serifu.id}
+                  text={serifu.text}
+                  category={category.id}
+                  featured={serifu.featured}
+                  createdAt={serifu.createdAt}
+                  showCategoryInId={false}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="bg-white rounded-2xl shadow-sm p-12 text-center">
+            <p class="text-xl" style="color: #a0aec0;">
+              このカテゴリーにはまだセリフがありません
+            </p>
+          </div>
+        )}
+      </main>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  let progressInterval: NodeJS.Timeout | null = null;
+  let progress = 0;
+
+  // 検索機能
+  const searchInput = document.getElementById('search-input') as HTMLInputElement;
+  const serifuList = document.getElementById('serifu-list');
+
+  searchInput?.addEventListener('input', (e) => {
+    const query = (e.target as HTMLInputElement).value.toLowerCase();
+    
+    if (!serifuList) return;
+    const items = serifuList.querySelectorAll('[data-text]');
+    items.forEach((item) => {
+      const text = item.getAttribute('data-text') || '';
+      if (text.includes(query)) {
+        (item as HTMLElement).style.display = 'block';
+      } else {
+        (item as HTMLElement).style.display = 'none';
+      }
+    });
+  });
+
+  // URLハッシュがあればスクロール
+  window.addEventListener('load', () => {
+    const hash = window.location.hash;
+    if (hash) {
+      const target = document.querySelector(hash) as HTMLElement | null;
+      if (target) {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // ハイライト効果
+          target.classList.add('ring-4');
+          target.style.setProperty('--tw-ring-color', '#a78bfa');
+          setTimeout(() => {
+            target.classList.remove('ring-4');
+          }, 2000);
+        }, 300);
+      }
+    }
+  });
+
+  // お気に入りボタン
+  document.querySelectorAll('.favorite-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.getAttribute('data-serifu-id');
+      
+      // お気に入りの追加/削除
+      const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+      const index = favorites.indexOf(id);
+      
+      if (index > -1) {
+        favorites.splice(index, 1);
+        btn.textContent = '❤️';
+        alert('お気に入りから削除しました');
+      } else {
+        favorites.push(id);
+        btn.textContent = '💖';
+        alert('お気に入りに追加しました');
+      }
+      
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    });
+  });
+
+  // コピーボタン
+  document.querySelectorAll('.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const id = btn.getAttribute('data-serifu-id');
+      const category = btn.closest('[data-category]')?.getAttribute('data-category');
+      const url = `${window.location.origin}/kotobako/category/${category}#serifu-${id}`;
+      
+      try {
+        await navigator.clipboard.writeText(url);
+        btn.textContent = '✅';
+        setTimeout(() => {
+          btn.textContent = '🔗';
+        }, 2000);
+      } catch (err) {
+        alert('コピーに失敗しました');
+      }
+    });
+  });
+
+  // お気に入り状態を復元
+  const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+  document.querySelectorAll('.favorite-btn').forEach((btn) => {
+    const id = btn.getAttribute('data-serifu-id');
+    if (favorites.includes(id)) {
+      btn.textContent = '💖';
+    }
+  });
+</script>

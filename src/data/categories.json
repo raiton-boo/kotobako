@@ -4,7 +4,213 @@
       "id": "batsu-game",
       "name": "罰ゲーム",
       "icon": "🎯",
-      "description": "パーティーや飲み会での罰ゲーム用セリフ"
+      "description": "パーティーや飲み会での罰ゲーム用セリフ",
+      "serifu": [
+        {
+          "id": "batsu-game-1",
+          "text": "ニャーと鳴いてみて",
+          "featured": false,
+          "createdAt": "2025-11-07"
+        },
+        {
+          "id": "batsu-game-2",
+          "text": "腕立て伏せ30回やります",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "batsu-game-3",
+          "text": "変顔で10秒キープ",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "batsu-game-4",
+          "text": "早口言葉3回連続成功するまで続けます",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "batsu-game-5",
+          "text": "全身で愛を表現してください",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "batsu-game-6",
+          "text": "一発芸を披露してください",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "batsu-game-7",
+          "text": "3分間ずっと笑顔をキープ",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "batsu-game-8",
+          "text": "即興でラップ披露してください",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        }
+      ]
+    },
+    {
+      "id": "kokuhaku",
+      "name": "告白",
+      "icon": "💕",
+      "description": "恥ずかしい告白セリフ集",
+      "serifu": [
+        {
+          "id": "kokuhaku-1",
+          "text": "好きです、付き合ってください",
+          "featured": true,
+          "createdAt": "2025-11-07"
+        },
+        {
+          "id": "kokuhaku-2",
+          "text": "ずっと見てました、一目惚れです",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "kokuhaku-3",
+          "text": "あなたの笑顔が好きです",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "kokuhaku-4",
+          "text": "運命の人だと思いました",
+          "featured": true,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "kokuhaku-5",
+          "text": "君といると心が温かくなる",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "kokuhaku-6",
+          "text": "毎日あなたのことを考えてます",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "kokuhaku-7",
+          "text": "あなたがいない人生は考えられません",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "kokuhaku-8",
+          "text": "初めて会った時から特別な人でした",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        }
+      ]
+    },
+    {
+      "id": "haishin",
+      "name": "配信ネタ",
+      "icon": "🎤",
+      "description": "配信で使える面白いセリフ",
+      "serifu": [
+        {
+          "id": "haishin-1",
+          "text": "今から全力でモノマネします",
+          "featured": false,
+          "createdAt": "2025-11-07"
+        },
+        {
+          "id": "haishin-2",
+          "text": "視聴者さんのリクエスト何でもやります",
+          "featured": true,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "haishin-3",
+          "text": "今から歌ってみた配信します",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "haishin-4",
+          "text": "スパチャ読み上げ全力でやります",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "haishin-5",
+          "text": "今日は雑談配信だけど質問なんでも答えます",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "haishin-6",
+          "text": "視聴者参加型ゲームやります",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "haishin-7",
+          "text": "コラボ配信やりたいのでDMください",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        }
+      ]
+    },
+    {
+      "id": "chuunibyou",
+      "name": "厨二病",
+      "icon": "⚡",
+      "description": "中二病全開のかっこいいセリフ",
+      "serifu": [
+        {
+          "id": "chuunibyou-1",
+          "text": "我が右腕に宿りし闇の力を解放する時が来た",
+          "featured": true,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "chuunibyou-2",
+          "text": "封印されし古の力よ、今こそ目覚めよ",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "chuunibyou-3",
+          "text": "闇に飲まれよ!",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "chuunibyou-4",
+          "text": "我が名は混沌を統べる者",
+          "featured": true,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "chuunibyou-5",
+          "text": "この世界は私の掌の上",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "chuunibyou-6",
+          "text": "真なる力を解放する",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        },
+        {
+          "id": "chuunibyou-7",
+          "text": "邪眼の力を舐めるなよ",
+          "featured": false,
+          "createdAt": "2025-11-08"
+        }
+      ]
     }
   ]
 }

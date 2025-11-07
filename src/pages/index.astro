@@ -1,34 +1,52 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import CategoryNav from '../components/CategoryNav.astro';
-import SerifuCard from '../components/SerifuCard.astro';
-import RandomButton from '../components/RandomButton.astro';
-import serifuData from '../data/serifu.json';
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import CategoryNav from "../components/CategoryNav.astro";
+import SerifuCard from "../components/SerifuCard.astro";
+import SearchBar from "../components/SearchBar.astro";
+import FavoriteNotice from "../components/FavoriteNotice.astro";
+import categoriesData from "../data/categories.json";
 
 const title = 'ことば箱';
 const description = 'パーティーや配信で使える面白いセリフ集';
 
 interface Serifu {
-  id: number;
+  id: string;
   text: string;
-  category: string;
   featured: boolean;
   createdAt: string;
 }
 
-interface SerifuData {
+interface Category {
+  id: string;
+  name: string;
+  icon: string;
+  description: string;
   serifu: Serifu[];
 }
 
-const data = serifuData as SerifuData;
+interface CategoriesData {
+  categories: Category[];
+}
 
-// ランダムに6件表示
-const shuffled = [...data.serifu].sort(() => Math.random() - 0.5);
-const displaySerifu = shuffled.slice(0, 6);
+const data = categoriesData as CategoriesData;
+
+// 全セリフを1つの配列にまとめる
+const allSerifu = data.categories.flatMap((category) =>
+  category.serifu.map((s) => ({
+    ...s,
+    category: category.id,
+  }))
+);
+
+// ランダムに表示（デスクトップ20件、スマホ10件）
+const shuffled = [...allSerifu].sort(() => Math.random() - 0.5);
+const displaySerifuDesktop = shuffled.slice(0, 20);
+const displaySerifuMobile = shuffled.slice(0, 10);
 ---
 
 <Layout title={title} description={description}>
+  <FavoriteNotice />
   <Header />
   
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -36,22 +54,154 @@ const displaySerifu = shuffled.slice(0, 6);
       <CategoryNav />
       
       <main class="flex-1 min-w-0">
-        <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <!-- パンくずリスト -->
+        <nav class="mb-6 text-sm" style="color: #a0aec0;">
+          <span style="color: #718096;">ホーム</span>
+        </nav>
+
+        <div class="mb-8">
           <h1 class="text-3xl font-bold" style="color: #2d3748;">ランダムセリフ</h1>
-          <RandomButton />
+          <p class="text-sm mt-2" style="color: #a0aec0;">
+            カードを長押しでカテゴリーページへ移動
+          </p>
+        </div>
+
+        <SearchBar />
+        
+        <!-- デスクトップ: 20件 -->
+        <div id="serifu-list" class="hidden lg:grid gap-6 grid-cols-1 lg:grid-cols-2">
+          {displaySerifuDesktop.map((serifu) => (
+            <div data-category={serifu.category} data-text={serifu.text.toLowerCase()}>
+              <SerifuCard
+                id={serifu.id}
+                text={serifu.text}
+                category={serifu.category}
+                featured={serifu.featured}
+                createdAt={serifu.createdAt}
+                showCategoryInId={true}
+              />
+            </div>
+          ))}
         </div>
         
-        <div class="grid gap-6 grid-cols-1 lg:grid-cols-2">
-          {displaySerifu.map((serifu) => (
-            <SerifuCard
-              id={serifu.id}
-              text={serifu.text}
-              category={serifu.category}
-              featured={serifu.featured}
-            />
+        <!-- スマホ: 10件 -->
+        <div id="serifu-list-mobile" class="grid lg:hidden gap-6 grid-cols-1">
+          {displaySerifuMobile.map((serifu) => (
+            <div data-category={serifu.category} data-text={serifu.text.toLowerCase()}>
+              <SerifuCard
+                id={serifu.id}
+                text={serifu.text}
+                category={serifu.category}
+                featured={serifu.featured}
+                createdAt={serifu.createdAt}
+                showCategoryInId={true}
+              />
+            </div>
           ))}
         </div>
       </main>
     </div>
   </div>
 </Layout>
+
+<script>
+  let pressTimer: NodeJS.Timeout | null = null;
+  let progressInterval: NodeJS.Timeout | null = null;
+  let progress = 0;
+
+  // 検索機能
+  const searchInput = document.getElementById('search-input') as HTMLInputElement;
+  const serifuLists = [
+    document.getElementById('serifu-list'),
+    document.getElementById('serifu-list-mobile')
+  ];
+
+  searchInput?.addEventListener('input', (e) => {
+    const query = (e.target as HTMLInputElement).value.toLowerCase();
+    
+    serifuLists.forEach(list => {
+      if (!list) return;
+      const items = list.querySelectorAll('[data-text]');
+      items.forEach((item) => {
+        const text = item.getAttribute('data-text') || '';
+        if (text.includes(query)) {
+          (item as HTMLElement).style.display = 'block';
+        } else {
+          (item as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // 長押し機能
+  document.querySelectorAll('[data-id]').forEach((card) => {
+    const overlay = card.querySelector('.progress-overlay') as HTMLElement;
+    const category = card.getAttribute('data-category');
+    const id = card.getAttribute('data-id');
+
+    const startPress = () => {
+      progress = 0;
+      overlay?.classList.add('active');
+      
+      progressInterval = setInterval(() => {
+        progress += 2;
+        if (overlay) {
+          overlay.style.background = `linear-gradient(90deg, rgba(167, 139, 250, 0.3) ${progress}%, transparent ${progress}%)`;
+        }
+        
+        if (progress >= 100) {
+          clearInterval(progressInterval!);
+          window.location.href = `/kotobako/category/${category}#serifu-${id}`;
+        }
+      }, 20);
+    };
+
+    const endPress = () => {
+      if (progressInterval) {
+        clearInterval(progressInterval);
+      }
+      progress = 0;
+      overlay?.classList.remove('active');
+      if (overlay) {
+        overlay.style.background = 'linear-gradient(90deg, rgba(167, 139, 250, 0.3) 0%, transparent 0%)';
+      }
+    };
+
+    card.addEventListener('mousedown', startPress);
+    card.addEventListener('touchstart', startPress);
+    card.addEventListener('mouseup', endPress);
+    card.addEventListener('mouseleave', endPress);
+    card.addEventListener('touchend', endPress);
+    card.addEventListener('touchcancel', endPress);
+  });
+
+  // お気に入りボタン
+  document.querySelectorAll('.favorite-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const id = btn.getAttribute('data-serifu-id');
+      // TODO: お気に入り機能実装
+      alert('お気に入りに追加しました！(実装予定)');
+    });
+  });
+
+  // コピーボタン
+  document.querySelectorAll('.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const id = btn.getAttribute('data-serifu-id');
+      const category = btn.closest('[data-category]')?.getAttribute('data-category');
+      const url = `${window.location.origin}/kotobako/category/${category}#serifu-${id}`;
+      
+      try {
+        await navigator.clipboard.writeText(url);
+        btn.textContent = '✅';
+        setTimeout(() => {
+          btn.textContent = '🔗';
+        }, 2000);
+      } catch (err) {
+        alert('コピーに失敗しました');
+      }
+    });
+  });
+</script>

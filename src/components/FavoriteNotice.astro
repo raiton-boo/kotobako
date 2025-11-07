@@ -1,0 +1,39 @@
+---
+---
+
+<div id="favorite-notice" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
+    <h2 class="text-2xl font-bold mb-4" style="color: #2d3748;">
+      ⭐ お気に入り機能について
+    </h2>
+    <p class="text-lg mb-6" style="color: #718096;">
+      お気に入りはブラウザのローカルストレージに保存されます。ブラウザのキャッシュを削除すると、お気に入りも削除されますのでご注意ください。
+    </p>
+    <button
+      id="favorite-notice-ok"
+      class="w-full px-6 py-3 rounded-full font-bold text-white shadow-md hover:shadow-lg transition-all duration-300"
+      style="background-color: #a78bfa;"
+    >
+      わかりました
+    </button>
+  </div>
+</div>
+
+<script>
+  const notice = document.getElementById('favorite-notice');
+  const okBtn = document.getElementById('favorite-notice-ok');
+  
+  // 初回表示チェック
+  const hasSeenNotice = localStorage.getItem('favorite-notice-seen');
+  
+  if (!hasSeenNotice && notice) {
+    notice.classList.remove('hidden');
+  }
+  
+  if (okBtn) {
+    okBtn.addEventListener('click', () => {
+      localStorage.setItem('favorite-notice-seen', 'true');
+      notice?.classList.add('hidden');
+    });
+  }
+</script>
