@@ -1,8 +1,6 @@
 ---
 import categoriesData from '../data/categories.json';
 
-const currentPath = Astro.url.pathname;
-
 interface Category {
   id: string;
   name: string;
@@ -14,68 +12,47 @@ interface CategoriesData {
   categories: Category[];
 }
 
-const { categories } = categoriesData as CategoriesData;
+const data = categoriesData as CategoriesData;
+const currentPath = Astro.url.pathname;
 ---
 
-<!-- デスクトップ: 左サイドバー -->
-<aside class="hidden lg:block w-64 bg-white rounded-2xl shadow-sm p-6 sticky top-20 h-fit">
-  <h2 class="text-lg font-bold mb-4">カテゴリー</h2>
-  <nav>
+<aside class="hidden lg:block w-64 flex-shrink-0">
+  <nav class="sticky top-24 bg-white rounded-2xl shadow-md p-6">
+    <h2 class="text-lg font-bold text-gray-800 mb-4">
+      カテゴリー
+    </h2>
+    
     <ul class="space-y-2">
       <li>
         <a
           href="/kotobako"
-          class="block px-4 py-2 rounded-xl transition-colors"
-          style={currentPath === '/kotobako' || currentPath === '/kotobako/' 
-            ? 'background-color: #a78bfa; color: white;' 
-            : 'background-color: transparent;'}
+          class={`block px-4 py-3 rounded-xl transition-all duration-200 ${
+            currentPath === '/kotobako' || currentPath === '/kotobako/'
+              ? 'bg-purple-400 text-white font-bold'
+              : 'text-gray-600 hover:bg-purple-50'
+          }`}
         >
-          すべて
+          ✨ すべて
         </a>
       </li>
-      {categories.map((category) => (
-        <li>
-          <a
-            href={`/kotobako/category/${category.id}`}
-            class="block px-4 py-2 rounded-xl transition-colors hover:bg-gray-100"
-            style={currentPath.includes(category.id)
-              ? 'background-color: #a78bfa; color: white;'
-              : 'background-color: transparent;'}
-          >
-            {category.icon} {category.name}
-          </a>
-        </li>
-      ))}
+      
+      {data.categories.map((category) => {
+        const isActive = currentPath.includes(`/category/${category.id}`);
+        return (
+          <li>
+            <a
+              href={`/kotobako/category/${category.id}`}
+              class={`block px-4 py-3 rounded-xl transition-all duration-200 ${
+                isActive
+                  ? 'bg-purple-400 text-white font-bold'
+                  : 'text-gray-600 hover:bg-purple-50'
+              }`}
+            >
+              {category.icon} {category.name}
+            </a>
+          </li>
+        );
+      })}
     </ul>
   </nav>
 </aside>
-
-<!-- モバイル: 横スクロール -->
-<nav class="lg:hidden bg-white shadow-sm mb-6 overflow-x-auto rounded-2xl">
-  <ul class="flex space-x-2 p-4">
-    <li class="flex-shrink-0">
-      <a
-        href="/kotobako"
-        class="block px-4 py-2 rounded-full whitespace-nowrap transition-colors"
-        style={currentPath === '/kotobako' || currentPath === '/kotobako/'
-          ? 'background-color: #a78bfa; color: white;'
-          : 'background-color: #f3f4f6;'}
-      >
-        すべて
-      </a>
-    </li>
-    {categories.map((category) => (
-      <li class="flex-shrink-0">
-        <a
-          href={`/kotobako/category/${category.id}`}
-          class="block px-4 py-2 rounded-full whitespace-nowrap transition-colors hover:bg-gray-200"
-          style={currentPath.includes(category.id)
-            ? 'background-color: #a78bfa; color: white;'
-            : 'background-color: #f3f4f6;'}
-        >
-          {category.icon} {category.name}
-        </a>
-      </li>
-    ))}
-  </ul>
-</nav>

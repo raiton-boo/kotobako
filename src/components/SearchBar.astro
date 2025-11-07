@@ -15,18 +15,10 @@ const placeholder = categoryName
       type="text"
       id="search-input"
       placeholder={placeholder}
-      class="w-full px-6 py-4 pr-12 rounded-full border-2 text-lg transition-all duration-300 focus:outline-none"
-      style="border-color: #e2e8f0; color: #2d3748;"
+      class="w-full px-6 py-4 pr-12 rounded-full border-2 border-gray-200 bg-white text-gray-800 text-lg transition-all duration-300 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100"
     />
     <span class="absolute right-6 top-1/2 transform -translate-y-1/2 text-2xl pointer-events-none">
       🔍
     </span>
   </div>
 </div>
-
-<style>
-  #search-input:focus {
-    border-color: #a78bfa;
-    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.1);
-  }
-</style>

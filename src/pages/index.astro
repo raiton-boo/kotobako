@@ -1,10 +1,12 @@
 ---
+// filepath: src/pages/index.astro
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import CategoryNav from "../components/CategoryNav.astro";
 import SerifuCard from "../components/SerifuCard.astro";
 import SearchBar from "../components/SearchBar.astro";
 import FavoriteNotice from "../components/FavoriteNotice.astro";
+import Footer from "../components/Footer.astro";
 import categoriesData from "../data/categories.json";
 
 const title = 'ことば箱';
@@ -55,23 +57,30 @@ const displaySerifuMobile = shuffled.slice(0, 10);
       
       <main class="flex-1 min-w-0">
         <!-- パンくずリスト -->
-        <nav class="mb-6 text-sm" style="color: #a0aec0;">
-          <span style="color: #718096;">ホーム</span>
+        <nav class="mb-6 text-sm text-gray-400">
+          <span class="text-gray-600">ホーム</span>
         </nav>
 
         <div class="mb-8">
-          <h1 class="text-3xl font-bold" style="color: #2d3748;">ランダムセリフ</h1>
-          <p class="text-sm mt-2" style="color: #a0aec0;">
+          <h1 class="text-3xl font-bold text-gray-800">
+            ランダムセリフ
+          </h1>
+          <p class="text-sm mt-2 text-gray-400">
             カードを長押しでカテゴリーページへ移動
           </p>
         </div>
 
         <SearchBar />
-        
+
         <!-- デスクトップ: 20件 -->
         <div id="serifu-list" class="hidden lg:grid gap-6 grid-cols-1 lg:grid-cols-2">
           {displaySerifuDesktop.map((serifu) => (
-            <div data-category={serifu.category} data-text={serifu.text.toLowerCase()}>
+            <div 
+              data-category={serifu.category} 
+              data-text={serifu.text.toLowerCase()}
+              data-date={serifu.createdAt}
+              data-featured={serifu.featured}
+            >
               <SerifuCard
                 id={serifu.id}
                 text={serifu.text}
@@ -87,7 +96,12 @@ const displaySerifuMobile = shuffled.slice(0, 10);
         <!-- スマホ: 10件 -->
         <div id="serifu-list-mobile" class="grid lg:hidden gap-6 grid-cols-1">
           {displaySerifuMobile.map((serifu) => (
-            <div data-category={serifu.category} data-text={serifu.text.toLowerCase()}>
+            <div 
+              data-category={serifu.category} 
+              data-text={serifu.text.toLowerCase()}
+              data-date={serifu.createdAt}
+              data-featured={serifu.featured}
+            >
               <SerifuCard
                 id={serifu.id}
                 text={serifu.text}
@@ -102,7 +116,10 @@ const displaySerifuMobile = shuffled.slice(0, 10);
       </main>
     </div>
   </div>
+  
+  <Footer />
 </Layout>
+
 
 <script>
   let pressTimer: NodeJS.Timeout | null = null;
@@ -133,13 +150,45 @@ const displaySerifuMobile = shuffled.slice(0, 10);
     });
   });
 
+  // ソート機能
+  const sortSelect = document.getElementById('sort-select') as HTMLSelectElement;
+  
+  sortSelect?.addEventListener('change', (e) => {
+    const sortType = (e.target as HTMLSelectElement).value;
+    
+    serifuLists.forEach(list => {
+      if (!list) return;
+      const items = Array.from(list.querySelectorAll('[data-date]')) as HTMLElement[];
+      
+      items.sort((a, b) => {
+        if (sortType === 'newest') {
+          return (b.getAttribute('data-date') || '').localeCompare(a.getAttribute('data-date') || '');
+        } else if (sortType === 'oldest') {
+          return (a.getAttribute('data-date') || '').localeCompare(b.getAttribute('data-date') || '');
+        } else if (sortType === 'featured') {
+          const aFeatured = a.getAttribute('data-featured') === 'true' ? 1 : 0;
+          const bFeatured = b.getAttribute('data-featured') === 'true' ? 1 : 0;
+          return bFeatured - aFeatured;
+        }
+        return 0;
+      });
+      
+      items.forEach(item => list.appendChild(item));
+    });
+  });
+
   // 長押し機能
   document.querySelectorAll('[data-id]').forEach((card) => {
     const overlay = card.querySelector('.progress-overlay') as HTMLElement;
     const category = card.getAttribute('data-category');
     const id = card.getAttribute('data-id');
 
-    const startPress = () => {
+    const startPress = (e: Event) => {
+      // ボタンクリック時は長押しを発火しない
+      if ((e.target as HTMLElement).closest('button')) {
+        return;
+      }
+      
       progress = 0;
       overlay?.classList.add('active');
       
@@ -175,13 +224,44 @@ const displaySerifuMobile = shuffled.slice(0, 10);
     card.addEventListener('touchcancel', endPress);
   });
 
+  // トースト表示関数
+  function showToast(icon: string, message: string, color: string) {
+    const toast = document.getElementById('favorite-toast');
+    const toastIcon = document.getElementById('toast-icon');
+    const toastMessage = document.getElementById('toast-message');
+    
+    if (toastIcon && toastMessage && toast) {
+      toastIcon.textContent = icon;
+      toastMessage.textContent = message;
+      toast.classList.add('show');
+      toast.style.backgroundColor = color;
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+  }
+
   // お気に入りボタン
   document.querySelectorAll('.favorite-btn').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const id = btn.getAttribute('data-serifu-id');
-      // TODO: お気に入り機能実装
-      alert('お気に入りに追加しました！(実装予定)');
+      
+      const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+      const index = favorites.indexOf(id);
+      
+      if (index > -1) {
+        favorites.splice(index, 1);
+        btn.textContent = '❤️';
+        showToast('💔', 'お気に入りから削除しました', '#ef4444');
+      } else {
+        favorites.push(id);
+        btn.textContent = '💖';
+        showToast('💖', 'お気に入りに追加しました', '#a855f7');
+      }
+      
+      localStorage.setItem('favorites', JSON.stringify(favorites));
     });
   });
 
@@ -196,6 +276,7 @@ const displaySerifuMobile = shuffled.slice(0, 10);
       try {
         await navigator.clipboard.writeText(url);
         btn.textContent = '✅';
+        showToast('🔗', 'リンクをコピーしました', '#10b981');
         setTimeout(() => {
           btn.textContent = '🔗';
         }, 2000);
@@ -203,5 +284,14 @@ const displaySerifuMobile = shuffled.slice(0, 10);
         alert('コピーに失敗しました');
       }
     });
+  });
+
+  // お気に入り状態を復元
+  const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+  document.querySelectorAll('.favorite-btn').forEach((btn) => {
+    const id = btn.getAttribute('data-serifu-id');
+    if (favorites.includes(id)) {
+      btn.textContent = '💖';
+    }
   });
 </script>
