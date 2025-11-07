@@ -1,0 +1,20 @@
+---
+---
+
+<button 
+  id="shuffle-btn"
+  class="px-6 py-3 text-white rounded-full font-bold shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+  style="background-color: #a78bfa;"
+>
+  🎲 シャッフル
+</button>
+
+<script>
+  const shuffleBtn = document.getElementById('shuffle-btn');
+  
+  if (shuffleBtn) {
+    shuffleBtn.addEventListener('click', () => {
+      window.location.reload();
+    });
+  }
+</script>

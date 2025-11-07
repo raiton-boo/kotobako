@@ -1,13 +1,57 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import CategoryNav from "../components/CategoryNav.astro";
+import SerifuCard from "../components/SerifuCard.astro";
+import RandomButton from "../components/RandomButton.astro";
+import serifuData from "../data/serifu.json";
 
 const title = 'ことば箱';
 const description = 'パーティーや配信で使える面白いセリフ集';
+
+interface Serifu {
+  id: number;
+  text: string;
+  category: string;
+  featured: boolean;
+  createdAt: string;
+}
+
+interface SerifuData {
+  serifu: Serifu[];
+}
+
+const data = serifuData as SerifuData;
+
+// ランダムに6件表示
+const shuffled = [...data.serifu].sort(() => Math.random() - 0.5);
+const displaySerifu = shuffled.slice(0, 6);
 ---
 
 <Layout title={title} description={description}>
-	<main>
-		<h1>ことば箱</h1>
-		<p>ここにコンテンツが入ります</p>
-	</main>
+  <Header />
+  
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex gap-8">
+      <CategoryNav />
+      
+      <main class="flex-1 min-w-0">
+        <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <h1 class="text-3xl font-bold" style="color: #2d3748;">ランダムセリフ</h1>
+          <RandomButton />
+        </div>
+        
+        <div class="grid gap-6 grid-cols-1 lg:grid-cols-2">
+          {displaySerifu.map((serifu) => (
+            <SerifuCard
+              id={serifu.id}
+              text={serifu.text}
+              category={serifu.category}
+              featured={serifu.featured}
+            />
+          ))}
+        </div>
+      </main>
+    </div>
+  </div>
 </Layout>
