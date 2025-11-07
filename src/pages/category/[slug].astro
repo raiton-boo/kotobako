@@ -98,31 +98,21 @@ const description = category.description;
 
 
 <script>
-  let pressTimer: NodeJS.Timeout | null = null;
-  let progressInterval: NodeJS.Timeout | null = null;
-  let progress = 0;
-
   // 検索機能
   const searchInput = document.getElementById('search-input') as HTMLInputElement;
-  const serifuLists = [
-    document.getElementById('serifu-list'),
-    document.getElementById('serifu-list-mobile')
-  ];
+  const serifuList = document.getElementById('serifu-list');
 
   searchInput?.addEventListener('input', (e) => {
     const query = (e.target as HTMLInputElement).value.toLowerCase();
+    const items = serifuList?.querySelectorAll('[data-text]');
     
-    serifuLists.forEach(list => {
-      if (!list) return;
-      const items = list.querySelectorAll('[data-text]');
-      items.forEach((item) => {
-        const text = item.getAttribute('data-text') || '';
-        if (text.includes(query)) {
-          (item as HTMLElement).style.display = 'block';
-        } else {
-          (item as HTMLElement).style.display = 'none';
-        }
-      });
+    items?.forEach((item) => {
+      const text = item.getAttribute('data-text') || '';
+      if (text.includes(query)) {
+        (item as HTMLElement).style.display = 'block';
+      } else {
+        (item as HTMLElement).style.display = 'none';
+      }
     });
   });
 
@@ -131,73 +121,22 @@ const description = category.description;
   
   sortSelect?.addEventListener('change', (e) => {
     const sortType = (e.target as HTMLSelectElement).value;
+    const items = Array.from(serifuList?.querySelectorAll('[data-date]') || []) as HTMLElement[];
     
-    serifuLists.forEach(list => {
-      if (!list) return;
-      const items = Array.from(list.querySelectorAll('[data-date]')) as HTMLElement[];
-      
-      items.sort((a, b) => {
-        if (sortType === 'newest') {
-          return (b.getAttribute('data-date') || '').localeCompare(a.getAttribute('data-date') || '');
-        } else if (sortType === 'oldest') {
-          return (a.getAttribute('data-date') || '').localeCompare(b.getAttribute('data-date') || '');
-        } else if (sortType === 'featured') {
-          const aFeatured = a.getAttribute('data-featured') === 'true' ? 1 : 0;
-          const bFeatured = b.getAttribute('data-featured') === 'true' ? 1 : 0;
-          return bFeatured - aFeatured;
-        }
-        return 0;
-      });
-      
-      items.forEach(item => list.appendChild(item));
+    items.sort((a, b) => {
+      if (sortType === 'newest') {
+        return (b.getAttribute('data-date') || '').localeCompare(a.getAttribute('data-date') || '');
+      } else if (sortType === 'oldest') {
+        return (a.getAttribute('data-date') || '').localeCompare(b.getAttribute('data-date') || '');
+      } else if (sortType === 'featured') {
+        const aFeatured = a.getAttribute('data-featured') === 'true' ? 1 : 0;
+        const bFeatured = b.getAttribute('data-featured') === 'true' ? 1 : 0;
+        return bFeatured - aFeatured;
+      }
+      return 0;
     });
-  });
-
-  // 長押し機能
-  document.querySelectorAll('[data-id]').forEach((card) => {
-    const overlay = card.querySelector('.progress-overlay') as HTMLElement;
-    const category = card.getAttribute('data-category');
-    const id = card.getAttribute('data-id');
-
-    const startPress = (e: Event) => {
-      // ボタンクリック時は長押しを発火しない
-      if ((e.target as HTMLElement).closest('button')) {
-        return;
-      }
-      
-      progress = 0;
-      overlay?.classList.add('active');
-      
-      progressInterval = setInterval(() => {
-        progress += 2;
-        if (overlay) {
-          overlay.style.background = `linear-gradient(90deg, rgba(167, 139, 250, 0.3) ${progress}%, transparent ${progress}%)`;
-        }
-        
-        if (progress >= 100) {
-          clearInterval(progressInterval!);
-          window.location.href = `/kotobako/category/${category}#serifu-${id}`;
-        }
-      }, 20);
-    };
-
-    const endPress = () => {
-      if (progressInterval) {
-        clearInterval(progressInterval);
-      }
-      progress = 0;
-      overlay?.classList.remove('active');
-      if (overlay) {
-        overlay.style.background = 'linear-gradient(90deg, rgba(167, 139, 250, 0.3) 0%, transparent 0%)';
-      }
-    };
-
-    card.addEventListener('mousedown', startPress);
-    card.addEventListener('touchstart', startPress);
-    card.addEventListener('mouseup', endPress);
-    card.addEventListener('mouseleave', endPress);
-    card.addEventListener('touchend', endPress);
-    card.addEventListener('touchcancel', endPress);
+    
+    items.forEach(item => serifuList?.appendChild(item));
   });
 
   // トースト表示関数
@@ -246,8 +185,7 @@ const description = category.description;
     btn.addEventListener('click', async (e) => {
       e.stopPropagation();
       const id = btn.getAttribute('data-serifu-id');
-      const category = btn.closest('[data-category]')?.getAttribute('data-category');
-      const url = `${window.location.origin}/kotobako/category/${category}#serifu-${id}`;
+      const url = `${window.location.href.split('#')[0]}#serifu-${id}`;
       
       try {
         await navigator.clipboard.writeText(url);
@@ -270,4 +208,25 @@ const description = category.description;
       btn.textContent = '💖';
     }
   });
+
+  // URLハッシュで指定されたセリフにスクロール & ハイライト
+  if (window.location.hash) {
+    const targetId = window.location.hash.substring(1);
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      setTimeout(() => {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // ハイライトエフェクト
+        targetElement.style.transition = 'all 0.3s ease';
+        targetElement.style.transform = 'scale(1.05)';
+        targetElement.style.boxShadow = '0 0 0 4px rgba(167, 139, 250, 0.5)';
+        
+        setTimeout(() => {
+          targetElement.style.transform = 'scale(1)';
+          targetElement.style.boxShadow = '';
+        }, 2000);
+      }, 100);
+    }
+  }
 </script>
