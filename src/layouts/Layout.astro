@@ -20,6 +20,7 @@ const fullOgImage = new URL(ogImage, Astro.site);
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/kotobako/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="view-transition" content="same-origin" />
     
     <!-- OGP -->
     <meta property="og:title" content={title} />
@@ -45,13 +46,42 @@ const fullOgImage = new URL(ogImage, Astro.site);
   <body>
     <slot />
     
-    <!-- トースト通知コンテナ（左下に変更） -->
     <div id="toast-container" class="fixed bottom-8 left-8 z-50 flex flex-col gap-3">
     </div>
   </body>
 </html>
 
 <style is:global>
+  /* View Transitions API */
+  @view-transition {
+    navigation: auto;
+  }
+  
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.3s;
+  }
+  
+  ::view-transition-old(root) {
+    animation-name: fade-out;
+  }
+  
+  ::view-transition-new(root) {
+    animation-name: fade-in;
+  }
+  
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+
   .toast-item {
     display: flex;
     align-items: center;

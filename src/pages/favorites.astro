@@ -76,15 +76,25 @@ const allSerifu = data.categories.flatMap((category) =>
         </nav>
 
         <div class="mb-8">
-          <h1 class="text-3xl font-bold text-gray-800 mb-2">
-            💖 お気に入り
-          </h1>
-          <p class="text-lg text-gray-600">
-            お気に入りに登録したセリフ一覧
-          </p>
-          <p id="favorite-count" class="text-sm mt-2 text-gray-400">
-            全 0 件
-          </p>
+          <div class="flex items-center justify-between">
+            <div>
+              <h1 class="text-3xl font-bold text-gray-800 mb-2">
+                💖 お気に入り
+              </h1>
+              <p class="text-lg text-gray-600">
+                お気に入りに登録したセリフ一覧
+              </p>
+              <p id="favorite-count" class="text-sm mt-2 text-gray-400">
+                全 0 件
+              </p>
+            </div>
+            <button
+              id="clear-all-btn"
+              class="hidden px-4 py-2 bg-red-400 text-white rounded-full font-bold hover:bg-red-500 transition-all duration-200 transform hover:scale-105"
+            >
+              🗑️ 全て削除
+            </button>
+          </div>
         </div>
 
         <div class="flex flex-col md:flex-row gap-4 mb-6">
@@ -142,6 +152,7 @@ const allSerifu = data.categories.flatMap((category) =>
   const serifuList = document.getElementById('serifu-list');
   const emptyState = document.getElementById('empty-state');
   const favoriteCount = document.getElementById('favorite-count');
+  const clearAllBtn = document.getElementById('clear-all-btn');
 
   const favoriteSerifuList = allSerifu
     .filter((serifu) => favorites.includes(serifu.id))
@@ -156,6 +167,9 @@ const allSerifu = data.categories.flatMap((category) =>
       favoriteCount.textContent = '全 0 件';
     }
   } else {
+    // お気に入りがある場合、削除ボタンを表示
+    clearAllBtn?.classList.remove('hidden');
+    
     if (favoriteCount) {
       favoriteCount.textContent = `全 ${favoriteSerifuList.length} 件`;
     }
@@ -237,6 +251,38 @@ const allSerifu = data.categories.flatMap((category) =>
 
     setupLongPress();
   }
+
+  // 一括削除ボタンの処理
+  clearAllBtn?.addEventListener('click', () => {
+    const count = favoriteSerifuList.length;
+    
+    if (confirm(`お気に入りに登録されている ${count} 件のセリフを全て削除しますか？\nこの操作は取り消せません。`)) {
+      // LocalStorageをクリア
+      localStorage.removeItem('favoritesData');
+      localStorage.removeItem('favorites');
+      
+      // 全カードにフェードアウトアニメーション
+      const allCards = serifuList?.querySelectorAll('[data-text]');
+      allCards?.forEach((card, index) => {
+        setTimeout(() => {
+          card.style.transition = 'all 0.3s ease';
+          card.style.transform = 'scale(0.8)';
+          card.style.opacity = '0';
+        }, index * 50); // 順番にアニメーション
+      });
+      
+      // アニメーション完了後に画面を更新
+      setTimeout(() => {
+        serifuList?.classList.add('hidden');
+        emptyState?.classList.remove('hidden');
+        clearAllBtn?.classList.add('hidden');
+        if (favoriteCount) {
+          favoriteCount.textContent = '全 0 件';
+        }
+        showToast('🗑️', `${count} 件のお気に入りを削除しました`, '#ef4444');
+      }, allCards ? allCards.length * 50 + 300 : 300);
+    }
+  });
 
   // 検索機能
   const searchInput = document.getElementById('search-input');
@@ -379,6 +425,7 @@ const allSerifu = data.categories.flatMap((category) =>
             if (remainingCards.length === 0) {
               serifuList?.classList.add('hidden');
               emptyState?.classList.remove('hidden');
+              clearAllBtn?.classList.add('hidden');
             }
           }, 300);
         }

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://raiton-boo.github.io/kotobako/sitemap.xml
