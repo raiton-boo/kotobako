@@ -10,31 +10,31 @@
           "id": "batsu-game-1",
           "text": "ニャーと鳴く",
           "featured": false,
-          "createdAt": "2025-11-07"
+          "createdAt": "2025-11-01"
         },
         {
           "id": "batsu-game-2",
           "text": "腕立て伏せ30回やる",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-01"
         },
         {
           "id": "batsu-game-3",
           "text": "変顔で10秒キープ",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-03"
         },
         {
           "id": "batsu-game-4",
           "text": "早口言葉3回連続成功するまで続ける",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "batsu-game-5",
           "text": "全身で愛を表現する",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-06"
         },
         {
           "id": "batsu-game-6",
@@ -114,91 +114,91 @@
           "id": "kokuhaku-1",
           "text": "好きです、付き合ってください",
           "featured": true,
-          "createdAt": "2025-11-07"
+          "createdAt": "2025-11-03"
         },
         {
           "id": "kokuhaku-2",
           "text": "ずっと見てました、一目惚れです",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-03"
         },
         {
           "id": "kokuhaku-3",
           "text": "あなたの笑顔が好きです",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-03"
         },
         {
           "id": "kokuhaku-4",
           "text": "運命の人だと思いました",
           "featured": true,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-03"
         },
         {
           "id": "kokuhaku-5",
           "text": "君といると心が温かくなる",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-03"
         },
         {
           "id": "kokuhaku-6",
           "text": "毎日あなたのことを考えてます",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-03"
         },
         {
           "id": "kokuhaku-7",
           "text": "あなたがいない人生は考えられません",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "kokuhaku-8",
           "text": "初めて会った時から特別な人でした",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "kokuhaku-9",
           "text": "あなたのこと、誰よりも大切にしたい",
           "featured": false,
-          "createdAt": "2025-11-09"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "kokuhaku-10",
           "text": "出会ってから毎日が特別なんです",
           "featured": false,
-          "createdAt": "2025-11-09"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "kokuhaku-11",
           "text": "目が合うたびにドキドキしてます",
           "featured": false,
-          "createdAt": "2025-11-09"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "kokuhaku-12",
           "text": "離れてても、ずっと想ってるよ",
           "featured": false,
-          "createdAt": "2025-11-09"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "kokuhaku-13",
           "text": "君の隣がボクの特等席なんだ",
           "featured": true,
-          "createdAt": "2025-11-09"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "kokuhaku-14",
           "text": "勇気を出して言うね。好きだよ。",
           "featured": false,
-          "createdAt": "2025-11-09"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "kokuhaku-15",
           "text": "恋って、君のことだったんだ",
           "featured": false,
-          "createdAt": "2025-11-09"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "kokuhaku-16",
@@ -218,55 +218,55 @@
           "id": "haishin-1",
           "text": "今から全力でモノマネします",
           "featured": false,
-          "createdAt": "2025-11-07"
+          "createdAt": "2025-11-01"
         },
         {
           "id": "haishin-2",
           "text": "視聴者さんのリクエスト何でもやります",
           "featured": true,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-01"
         },
         {
           "id": "haishin-3",
           "text": "今から歌ってみた配信します",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-01"
         },
         {
           "id": "haishin-4",
           "text": "スパチャ読み上げ全力でやります",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-01"
         },
         {
           "id": "haishin-5",
           "text": "今日は雑談配信だけど質問なんでも答えます",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "haishin-6",
           "text": "視聴者参加型ゲームやります",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "haishin-7",
           "text": "コラボ配信やりたいのでDMください",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-05"
         },
         {
           "id": "haishin-8",
           "text": "今から10秒で笑わせます！",
           "featured": false,
-          "createdAt": "2025-11-09"
+          "createdAt": "2025-11-07"
         },
         {
           "id": "haishin-9",
           "text": "初見さんいらっしゃい！3秒で覚える名前言って！",
           "featured": false,
-          "createdAt": "2025-11-09"
+          "createdAt": "2025-11-08"
         },
         {
           "id": "haishin-10",
@@ -316,61 +316,61 @@
           "id": "chuunibyou-1",
           "text": "我が右腕に宿りし闇の力を解放する時が来た",
           "featured": true,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "chuunibyou-2",
           "text": "封印されし古の力よ、今こそ目覚めよ",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "chuunibyou-3",
           "text": "闇に飲まれよ!",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-04"
         },
         {
           "id": "chuunibyou-4",
           "text": "我が名は混沌を統べる者",
           "featured": true,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-05"
         },
         {
           "id": "chuunibyou-5",
           "text": "この世界は私の掌の上",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-06"
         },
         {
           "id": "chuunibyou-6",
           "text": "真なる力を解放する",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-06"
         },
         {
           "id": "chuunibyou-7",
           "text": "邪眼の力を舐めるなよ",
           "featured": false,
-          "createdAt": "2025-11-08"
+          "createdAt": "2025-11-06"
         },
         {
           "id": "chuunibyou-8",
           "text": "この手が光るとき、運命は動き出す…！",
           "featured": true,
-          "createdAt": "2025-11-09"
+          "createdAt": "2025-11-07"
         },
         {
           "id": "chuunibyou-9",
           "text": "闇よ、我に従え――覚醒の刻だ！",
           "featured": false,
-          "createdAt": "2025-11-09"
+          "createdAt": "2025-11-07"
         },
         {
           "id": "chuunibyou-10",
           "text": "我が魂を代償に、真なる力を解き放つ！",
           "featured": false,
-          "createdAt": "2025-11-09"
+          "createdAt": "2025-11-07"
         },
         {
           "id": "chuunibyou-11",
