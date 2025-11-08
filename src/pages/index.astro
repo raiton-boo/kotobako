@@ -125,6 +125,7 @@ const displaySerifuMobile = shuffled.slice(0, 10);
   let pressTimer: NodeJS.Timeout | null = null;
   let progressInterval: NodeJS.Timeout | null = null;
   let progress = 0;
+  let toastCount = 0;
 
   // 検索機能
   const searchInput = document.getElementById('search-input') as HTMLInputElement;
@@ -184,7 +185,6 @@ const displaySerifuMobile = shuffled.slice(0, 10);
     const id = card.getAttribute('data-id');
 
     const startPress = (e: Event) => {
-      // ボタンクリック時は長押しを発火しない
       if ((e.target as HTMLElement).closest('button')) {
         return;
       }
@@ -224,22 +224,45 @@ const displaySerifuMobile = shuffled.slice(0, 10);
     card.addEventListener('touchcancel', endPress);
   });
 
-  // トースト表示関数
+  // トースト表示関数（最大3件まで、即座に削除）
   function showToast(icon: string, message: string, color: string) {
-    const toast = document.getElementById('favorite-toast');
-    const toastIcon = document.getElementById('toast-icon');
-    const toastMessage = document.getElementById('toast-message');
-    
-    if (toastIcon && toastMessage && toast) {
-      toastIcon.textContent = icon;
-      toastMessage.textContent = message;
-      toast.classList.add('show');
-      toast.style.backgroundColor = color;
-      
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    // 既存のトーストが3件以上なら古いものを即座に削除
+    const existingToasts = container.querySelectorAll('.toast-item');
+    if (existingToasts.length >= 3) {
+      const oldestToast = existingToasts[0];
+      oldestToast.classList.remove('show');
+      // アニメーション完了を待たずにすぐ削除
       setTimeout(() => {
-        toast.classList.remove('show');
-      }, 2000);
+        oldestToast.remove();
+      }, 100);
     }
+
+    // 新しいトーストを作成
+    const toast = document.createElement('div');
+    toast.className = 'toast-item';
+    toast.style.backgroundColor = color;
+    toast.innerHTML = `
+      <span class="toast-icon">${icon}</span>
+      <span>${message}</span>
+    `;
+
+    container.appendChild(toast);
+
+    // アニメーション開始
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 10);
+
+    // 2秒後に自動削除
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => {
+        toast.remove();
+      }, 300);
+    }, 2000);
   }
 
   // お気に入りボタン

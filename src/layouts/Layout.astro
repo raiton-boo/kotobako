@@ -35,17 +35,33 @@ const { title, description = 'パーティーや配信で使える面白いセ�
   <body>
     <slot />
     
-    <!-- トースト通知 -->
-    <div id="favorite-toast" class="fixed bottom-8 right-8 bg-purple-500 text-white px-6 py-4 rounded-full shadow-lg opacity-0 transition-all duration-300 z-50 flex items-center gap-3" style="transform: translateY(100px);">
-      <span id="toast-icon" class="text-2xl">💖</span>
-      <span id="toast-message" class="font-bold">お気に入りに追加しました</span>
+    <!-- トースト通知コンテナ（左下に変更） -->
+    <div id="toast-container" class="fixed bottom-8 left-8 z-50 flex flex-col gap-3">
     </div>
   </body>
 </html>
 
 <style is:global>
-  #favorite-toast.show {
-    transform: translateY(0) !important;
-    opacity: 1 !important;
+  .toast-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+    border-radius: 9999px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    color: white;
+    font-weight: bold;
+    transform: translateX(-400px);
+    opacity: 0;
+    transition: all 0.15s ease;
+  }
+  
+  .toast-item.show {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  
+  .toast-item .toast-icon {
+    font-size: 1.5rem;
   }
 </style>

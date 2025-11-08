@@ -5,6 +5,7 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
     <div class="flex items-center justify-between">
       <a href="/kotobako" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+        <span class="text-4xl">💬</span>
         <div>
           <h1 class="text-2xl font-bold text-gray-800">
             ことば箱
@@ -22,7 +23,53 @@
         >
           🏠 ホーム
         </a>
+        
+        <a 
+          href="/kotobako/favorites" 
+          class="px-4 py-2 rounded-full hover:bg-purple-50 transition-all duration-200 text-gray-600 relative"
+        >
+          💖 お気に入り
+          <span id="favorite-count-badge" class="absolute -top-1 -right-1 bg-purple-400 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold hidden">
+            0
+          </span>
+        </a>
       </nav>
     </div>
   </div>
 </header>
+
+<script is:inline>
+  // お気に入り件数バッジを更新
+  function updateFavoriteBadge() {
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    const badge = document.getElementById('favorite-count-badge');
+    
+    if (badge) {
+      if (favorites.length > 0) {
+        badge.textContent = String(favorites.length);
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+  }
+
+  // 初回読み込み時
+  updateFavoriteBadge();
+
+  // localStorageの変更を監視（別タブでの変更も反映）
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'favorites') {
+      updateFavoriteBadge();
+    }
+  });
+
+  // 同じページ内での変更も監視
+  const originalSetItem = localStorage.setItem;
+  localStorage.setItem = function(key, value) {
+    originalSetItem.call(this, key, value);
+    if (key === 'favorites') {
+      updateFavoriteBadge();
+    }
+  };
+</script>
