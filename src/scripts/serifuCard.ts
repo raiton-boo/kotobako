@@ -22,6 +22,13 @@ import { getCategoryName } from '../utils/categories';
 import { formatDateSlash } from '../utils/date';
 
 /**
+ * お気に入り件数更新イベントを発火
+ */
+function dispatchFavoritesUpdated(): void {
+  window.dispatchEvent(new CustomEvent('favoritesUpdated'));
+}
+
+/**
  * セリフカードのHTMLを生成
  *
  * @param {Serifu & { category: string }} serifu - セリフデータ（カテゴリー付き）
@@ -35,13 +42,27 @@ export function generateSerifuCardHTML(
   const displayId = `${categoryName} No.${serifuNumber}`;
   const formattedDate = formatDateSlash(serifu.createdAt);
 
+  // テキストの長さに応じて高さを調整
+  const textLength = serifu.text.length;
+  let cardHeight = '280px';
+  let fontSize = 'text-3xl md:text-4xl';
+
+  if (textLength > 50) {
+    cardHeight = '320px';
+    fontSize = 'text-2xl md:text-3xl';
+  }
+  if (textLength > 80) {
+    cardHeight = '360px';
+    fontSize = 'text-xl md:text-2xl';
+  }
+
   return `
     <div 
       id="serifu-${serifu.id}"
-      class="serifu-card bg-white rounded-2xl shadow-md p-8 relative cursor-pointer select-none overflow-hidden"
+      class="serifu-card bg-white rounded-2xl shadow-md p-8 relative cursor-pointer select-none overflow-hidden flex flex-col"
       data-id="${serifu.id}"
       data-category="${serifu.category}"
-      style="height: 280px;"
+      style="min-height: ${cardHeight};"
     >
       <div class="progress-overlay"></div>
       
@@ -55,13 +76,15 @@ export function generateSerifuCardHTML(
           : ''
       }
       
-      <div class="absolute inset-0 flex items-center justify-center p-8" style="padding-bottom: 80px; z-index: 2;">
-        <p class="font-serifu text-3xl md:text-4xl text-center leading-relaxed text-gray-800 select-text cursor-text pointer-events-auto">
+      <!-- セリフテキスト（フレックスで中央配置） -->
+      <div class="flex-1 flex items-center justify-center p-4" style="z-index: 2;">
+        <p class="font-serifu ${fontSize} text-center leading-relaxed text-gray-800 select-text cursor-text pointer-events-auto">
           ${serifu.text}
         </p>
       </div>
       
-      <div class="absolute bottom-0 left-0 right-0 flex justify-between items-center p-8 pt-4 border-t border-gray-200 pointer-events-none" style="z-index: 2;">
+      <!-- フッター（下部固定） -->
+      <div class="flex justify-between items-center pt-4 mt-auto border-t border-gray-200 pointer-events-none" style="z-index: 2;">
         <div class="flex flex-col gap-1">
           <span class="text-sm font-bold text-gray-400">
             ${displayId}
@@ -214,6 +237,9 @@ export function initializeSerifuPage(
     } else {
       showFavoriteRemovedToast();
     }
+
+    // お気に入り件数更新イベントを発火 ← ここを追加！
+    dispatchFavoritesUpdated();
   });
 
   // コピーボタンのセットアップ

@@ -24,6 +24,7 @@ export function getStaticPaths() {
 }
 
 const { category } = Astro.props;
+const { slug } = Astro.params;
 
 // セリフにカテゴリー情報を追加
 const serifuWithCategory = category.serifu.map((serifu: Serifu) => ({
@@ -35,7 +36,11 @@ const title = `${category.name} | ことば箱`;
 const description = category.description;
 ---
 
-<MainLayout title={title} description={description}>
+<MainLayout 
+  title={title} 
+  description={description}
+  currentCategory={slug}
+>
   <!-- パンくずリスト -->
   <Breadcrumb 
     items={[

@@ -2,23 +2,36 @@
 /**
  * メインレイアウトコンポーネント
  * 
- * サイドバー、ヘッダー、フッターを含む共通レイアウト
- * index.astro、category/[slug].astro、favorites.astro で使用
+ * デスクトップ: 既存のサイドバーレイアウト
+ * モバイル/タブレット: ヘッダーにカテゴリーボタンを統合
  */
 import Layout from './Layout.astro';
-import Header from '../components/Header.astro';
-import CategoryNav from '../components/CategoryNav.astro';
 import FavoriteNotice from '../components/FavoriteNotice.astro';
 import Footer from '../components/Footer.astro';
+import categoriesData from '../data/categories.json';
+import type { CategoriesData } from '../types';
+
+const data = categoriesData as CategoriesData;
 
 interface Props {
   title: string;
   description?: string;
   ogImage?: string;
   showFavoriteNotice?: boolean;
+  currentCategory?: string;
 }
 
-const { title, description, ogImage, showFavoriteNotice = true } = Astro.props;
+const { title, description, ogImage, showFavoriteNotice = true, currentCategory } = Astro.props;
+
+// 現在のページパスを取得
+const currentPath = Astro.url.pathname;
+const isHome = currentPath === '/kotobako/' || currentPath === '/kotobako';
+const isFavorites = currentPath === '/kotobako/favorites' || currentPath === '/kotobako/favorites/';
+
+// 現在のカテゴリー情報を取得
+const currentCategoryData = currentCategory 
+  ? data.categories.find(cat => cat.id === currentCategory)
+  : null;
 ---
 
 <Layout title={title} description={description} ogImage={ogImage}>
@@ -43,12 +56,256 @@ const { title, description, ogImage, showFavoriteNotice = true } = Astro.props;
     }
   </style>
 
+  <!-- モバイル専用ヘッダー（1024px未満） -->
+  <header class="lg:hidden bg-white shadow-md sticky top-0 z-30">
+    <div class="px-4 py-3">
+      <div class="flex justify-between items-center">
+        <!-- ロゴ -->
+        <a href="/kotobako/" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <span class="text-2xl">📦</span>
+          <h1 class="text-lg font-bold text-gray-800">ことば箱</h1>
+        </a>
+        
+        <!-- カテゴリーボタン -->
+        <button
+          id="mobile-category-btn"
+          class:list={[
+            'relative flex items-center gap-2 px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 font-bold text-sm',
+            currentCategory ? 'bg-purple-600 text-white' : (isFavorites ? 'bg-pink-600 text-white' : 'bg-purple-500 text-white')
+          ]}
+          aria-label="カテゴリーを選択"
+        >
+          <span class="text-lg">📁</span>
+          <span>
+            {currentCategoryData ? currentCategoryData.name : (isFavorites ? 'お気に入り' : 'カテゴリー')}
+          </span>
+          <!-- お気に入りバッジ（右下） -->
+          <span
+            id="mobile-fav-badge"
+            class="absolute -bottom-1 -right-1 bg-red-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-lg"
+            style="display: none;"
+          >
+            0
+          </span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- デスクトップ専用ヘッダー（1024px以上） -->
+  <header class="hidden lg:block bg-white shadow-sm sticky top-0 z-40 transition-colors duration-300 border-b-2 border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex items-center justify-between">
+        <a href="/kotobako/" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+          <span class="text-3xl">📦</span>
+          <div class="leading-tight">
+            <h1 class="text-2xl font-bold text-gray-800">ことば箱</h1>
+            <p class="text-sm text-gray-400">セリフコレクション</p>
+          </div>
+        </a>
+
+        <nav class="flex items-center gap-3">
+          <a href="/kotobako/" class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-purple-50 transition-all duration-200 text-gray-600" aria-label="ホームへ移動">
+            <span class="hidden sm:inline">ホーム</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- モバイル用ボトムシート -->
+  <div
+    id="mobile-category-sheet"
+    class="lg:hidden fixed inset-0 z-50 opacity-0 invisible transition-opacity duration-300"
+  >
+    <div
+      id="mobile-overlay"
+      class="absolute inset-0 bg-black bg-opacity-50"
+    ></div>
+    
+    <div
+      id="mobile-sheet-content"
+      class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl transform translate-y-full transition-transform duration-300"
+    >
+      <div class="flex justify-center pt-3 pb-2">
+        <div class="w-12 h-1 bg-gray-300 rounded-full"></div>
+      </div>
+      
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h3 class="font-bold text-xl text-gray-800">カテゴリー</h3>
+      </div>
+      
+      <div class="max-h-[60vh] overflow-y-auto pb-6">
+        <!-- ホームリンク -->
+        <a
+          href="/kotobako/"
+          class:list={[
+            'block px-6 py-5 hover:bg-purple-50 active:bg-purple-100 transition-colors duration-200',
+            isHome && 'bg-purple-200 shadow-inner'
+          ]}
+        >
+          <div class="flex items-center gap-4">
+            <span class="text-3xl">🏠</span>
+            <div class="flex-1">
+              <div class="font-bold text-lg text-gray-800">ホーム</div>
+              <div class="text-sm text-gray-500">ランダムなセリフを表示</div>
+            </div>
+            {isHome && (
+              <span class="text-purple-600 text-xl font-bold">✓</span>
+            )}
+          </div>
+        </a>
+
+        <!-- お気に入りリンク -->
+        <a
+          href="/kotobako/favorites"
+          class:list={[
+            'block px-6 py-5 hover:bg-pink-50 active:bg-pink-100 transition-colors duration-200 mb-2',
+            isFavorites && 'bg-pink-200 shadow-inner'
+          ]}
+        >
+          <div class="flex items-center gap-4">
+            <span class="text-3xl">❤️</span>
+            <div class="flex-1">
+              <div class="font-bold text-lg text-gray-800">お気に入り</div>
+              <div class="text-sm text-gray-500">保存したセリフ一覧</div>
+            </div>
+            <div class="flex items-center gap-2">
+              <!-- お気に入り件数 -->
+              <span
+                id="mobile-sheet-fav-count"
+                class="bg-pink-500 text-white text-sm px-2.5 py-1 rounded-full font-bold shadow-md"
+                style="display: none;"
+              >
+                0
+              </span>
+              {isFavorites && (
+                <span class="text-pink-600 text-xl font-bold">✓</span>
+              )}
+            </div>
+          </div>
+        </a>
+
+        <!-- 区切り線 -->
+        <div class="border-t border-gray-200 mb-2"></div>
+
+        <!-- カテゴリー一覧 -->
+        {data.categories.map((category) => {
+          const isCurrent = currentCategory === category.id;
+          return (
+            <a
+              href={`/kotobako/category/${category.id}`}
+              class:list={[
+                'block px-6 py-5 hover:bg-purple-50 active:bg-purple-100 transition-colors duration-200',
+                isCurrent && 'bg-purple-200 shadow-inner'
+              ]}
+            >
+              <div class="flex items-center gap-4">
+                <span class="text-3xl">{category.icon}</span>
+                <div class="flex-1">
+                  <div class="font-bold text-lg text-gray-800">{category.name}</div>
+                  <div class="text-sm text-gray-500">{category.serifu.length}件のセリフ</div>
+                </div>
+                {isCurrent && (
+                  <span class="text-purple-600 text-xl font-bold">✓</span>
+                )}
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+
+  <!-- デスクトップ用レイアウト（1024px以上） -->
   {showFavoriteNotice && <FavoriteNotice />}
-  <Header />
   
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="flex gap-8">
-      <CategoryNav />
+    <div class="lg:flex lg:gap-8">
+      <!-- デスクトップ用カテゴリーナビ -->
+      <aside class="hidden lg:block w-64 shrink-0">
+        <nav class="sticky top-24 space-y-2">
+          <!-- ホームリンク -->
+          <a
+            href="/kotobako/"
+            class:list={[
+              'block px-4 py-3 rounded-xl hover:bg-purple-100 transition-colors duration-200',
+              isHome && 'bg-purple-200 shadow-md ring-2 ring-purple-300'
+            ]}
+          >
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🏠</span>
+              <div class="flex-1">
+                <div class="font-bold text-gray-800">ホーム</div>
+                <div class="text-xs text-gray-500">ランダム表示</div>
+              </div>
+              {isHome && (
+                <span class="text-purple-600 text-lg font-bold">✓</span>
+              )}
+            </div>
+          </a>
+
+          <!-- お気に入りリンク -->
+          <a
+            href="/kotobako/favorites"
+            class:list={[
+              'block px-4 py-3 rounded-xl hover:bg-pink-100 transition-colors duration-200 mb-4',
+              isFavorites && 'bg-pink-200 shadow-md ring-2 ring-pink-300'
+            ]}
+          >
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">❤️</span>
+              <div class="flex-1">
+                <div class="font-bold text-gray-800">お気に入り</div>
+                <div class="text-xs text-gray-500">保存したセリフ</div>
+              </div>
+              <div class="flex items-center gap-2">
+                <!-- お気に入り件数 -->
+                <span
+                  id="desktop-fav-count"
+                  class="bg-pink-500 text-white text-xs px-2 py-0.5 rounded-full font-bold shadow-md"
+                  style="display: none;"
+                >
+                  0
+                </span>
+                {isFavorites && (
+                  <span class="text-pink-600 text-lg font-bold">✓</span>
+                )}
+              </div>
+            </div>
+          </a>
+
+          <!-- 区切り線 -->
+          <div class="border-t border-gray-200 my-4"></div>
+
+          <!-- カテゴリー一覧 -->
+          {data.categories.map((category) => {
+            const isCurrent = currentCategory === category.id;
+            return (
+              <a
+                href={`/kotobako/category/${category.id}`}
+                class:list={[
+                  'block px-4 py-3 rounded-xl transition-colors duration-200',
+                  isCurrent 
+                    ? 'bg-purple-200 shadow-md ring-2 ring-purple-300'
+                    : 'hover:bg-purple-100'
+                ]}
+              >
+                <div class="flex items-center gap-3">
+                  <span class="text-2xl">{category.icon}</span>
+                  <div class="flex-1">
+                    <div class="font-bold text-gray-800">{category.name}</div>
+                    <div class="text-xs text-gray-500">{category.serifu.length}件</div>
+                  </div>
+                  {isCurrent && (
+                    <span class="text-purple-600 text-lg font-bold">✓</span>
+                  )}
+                </div>
+              </a>
+            );
+          })}
+        </nav>
+      </aside>
       
       <main class="flex-1 min-w-0">
         <slot />
@@ -57,4 +314,128 @@ const { title, description, ogImage, showFavoriteNotice = true } = Astro.props;
   </div>
   
   <Footer />
+
+  <script>
+    // モバイル用ボトムシート
+    const mobileBtn = document.getElementById('mobile-category-btn');
+    const mobileSheet = document.getElementById('mobile-category-sheet');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    const mobileContent = document.getElementById('mobile-sheet-content');
+    
+    function openMobileSheet() {
+      if (mobileSheet && mobileContent) {
+        mobileSheet.classList.remove('opacity-0', 'invisible');
+        setTimeout(() => {
+          mobileContent.classList.remove('translate-y-full');
+        }, 10);
+      }
+    }
+    
+    function closeMobileSheet() {
+      if (mobileSheet && mobileContent) {
+        mobileContent.classList.add('translate-y-full');
+        setTimeout(() => {
+          mobileSheet.classList.add('opacity-0', 'invisible');
+        }, 300);
+      }
+    }
+    
+    if (mobileBtn) {
+      mobileBtn.addEventListener('click', openMobileSheet);
+    }
+    
+    if (mobileOverlay) {
+      mobileOverlay.addEventListener('click', closeMobileSheet);
+    }
+    
+    // スワイプで閉じる
+    let startY = 0;
+    let currentY = 0;
+    
+    if (mobileContent) {
+      mobileContent.addEventListener('touchstart', (e) => {
+        startY = e.touches[0].clientY;
+      });
+      
+      mobileContent.addEventListener('touchmove', (e) => {
+        currentY = e.touches[0].clientY;
+        const diff = currentY - startY;
+        
+        if (diff > 0) {
+          mobileContent.style.transform = `translateY(${diff}px)`;
+        }
+      });
+      
+      mobileContent.addEventListener('touchend', () => {
+        const diff = currentY - startY;
+        
+        if (diff > 100) {
+          closeMobileSheet();
+        } else {
+          mobileContent.style.transform = '';
+        }
+      });
+    }
+
+    // お気に入り件数の更新
+    function updateFavoriteCount() {
+      try {
+        // 配列形式とオブジェクト形式の両方に対応
+        const favoritesRaw = localStorage.getItem('kotobako-favorites') || '[]';
+        let count = 0;
+        
+        try {
+          const parsed = JSON.parse(favoritesRaw);
+          if (Array.isArray(parsed)) {
+            count = parsed.length;
+          } else if (typeof parsed === 'object' && parsed !== null) {
+            count = Object.keys(parsed).length;
+          }
+        } catch (e) {
+          console.error('Failed to parse favorites:', e);
+        }
+        
+        console.log('Favorites count:', count, 'Raw:', favoritesRaw);
+        
+        // モバイルヘッダーのバッジ（右下）
+        const mobileBadge = document.getElementById('mobile-fav-badge');
+        if (mobileBadge) {
+          mobileBadge.textContent = count.toString();
+          mobileBadge.style.display = count > 0 ? 'flex' : 'none';
+        }
+        
+        // モバイルシートのバッジ（お気に入り行）
+        const sheetBadge = document.getElementById('mobile-sheet-fav-count');
+        if (sheetBadge) {
+          sheetBadge.textContent = count.toString();
+          sheetBadge.style.display = count > 0 ? 'inline-block' : 'none';
+        }
+        
+        // デスクトップサイドバーのバッジ
+        const desktopBadge = document.getElementById('desktop-fav-count');
+        if (desktopBadge) {
+          desktopBadge.textContent = count.toString();
+          desktopBadge.style.display = count > 0 ? 'inline-block' : 'none';
+        }
+      } catch (error) {
+        console.error('Failed to update favorite count:', error);
+      }
+    }
+    
+    // 初期表示
+    updateFavoriteCount();
+    
+    // storageイベントでリアルタイム更新
+    window.addEventListener('storage', updateFavoriteCount);
+    
+    // カスタムイベントでも更新
+    window.addEventListener('favoritesUpdated', updateFavoriteCount);
+    
+    // ページロード時にも実行
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', updateFavoriteCount);
+    } else {
+      updateFavoriteCount();
+    }
+  </script>
 </Layout>

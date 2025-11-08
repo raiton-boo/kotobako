@@ -8,13 +8,13 @@
       "serifu": [
         {
           "id": "batsu-game-1",
-          "text": "ニャーと鳴いてみて",
+          "text": "ニャーと鳴く",
           "featured": false,
           "createdAt": "2025-11-07"
         },
         {
           "id": "batsu-game-2",
-          "text": "腕立て伏せ30回やります",
+          "text": "腕立て伏せ30回やる",
           "featured": false,
           "createdAt": "2025-11-08"
         },
@@ -26,19 +26,19 @@
         },
         {
           "id": "batsu-game-4",
-          "text": "早口言葉3回連続成功するまで続けます",
+          "text": "早口言葉3回連続成功するまで続ける",
           "featured": false,
           "createdAt": "2025-11-08"
         },
         {
           "id": "batsu-game-5",
-          "text": "全身で愛を表現してください",
+          "text": "全身で愛を表現する",
           "featured": false,
           "createdAt": "2025-11-08"
         },
         {
           "id": "batsu-game-6",
-          "text": "一発芸を披露してください",
+          "text": "一発芸を披露",
           "featured": false,
           "createdAt": "2025-11-08"
         },
@@ -50,9 +50,57 @@
         },
         {
           "id": "batsu-game-8",
-          "text": "即興でラップ披露してください",
+          "text": "即興でラップ披露する",
           "featured": false,
           "createdAt": "2025-11-08"
+        },
+        {
+          "id": "batsu-game-9",
+          "text": "周りを見渡して“ボクは宇宙人です！”って宣言する",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "batsu-game-10",
+          "text": "10秒間、変な踊りを即興で披露",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "batsu-game-11",
+          "text": "好きなセリフをカタコト外国語風に言う",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "batsu-game-12",
+          "text": "スマホで自撮りして変顔を送信",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "batsu-game-13",
+          "text": "椅子に座ったまま腕立て伏せ5回",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "batsu-game-14",
+          "text": "10秒間、目を閉じて全力で笑う",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "batsu-game-15",
+          "text": "即興でラップor歌を1フレーズ歌う",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "batsu-game-16",
+          "text": "周りの人のマネを10秒間でやる",
+          "featured": false,
+          "createdAt": "2025-11-09"
         }
       ]
     },
@@ -109,6 +157,54 @@
           "text": "初めて会った時から特別な人でした",
           "featured": false,
           "createdAt": "2025-11-08"
+        },
+        {
+          "id": "kokuhaku-9",
+          "text": "あなたのこと、誰よりも大切にしたい",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "kokuhaku-10",
+          "text": "出会ってから毎日が特別なんです",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "kokuhaku-11",
+          "text": "目が合うたびにドキドキしてます",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "kokuhaku-12",
+          "text": "離れてても、ずっと想ってるよ",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "kokuhaku-13",
+          "text": "君の隣がボクの特等席なんだ",
+          "featured": true,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "kokuhaku-14",
+          "text": "勇気を出して言うね。好きだよ。",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "kokuhaku-15",
+          "text": "恋って、君のことだったんだ",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "kokuhaku-16",
+          "text": "もう隠せない。この気持ちは本物です",
+          "featured": false,
+          "createdAt": "2025-11-09"
         }
       ]
     },
@@ -159,6 +255,54 @@
           "text": "コラボ配信やりたいのでDMください",
           "featured": false,
           "createdAt": "2025-11-08"
+        },
+        {
+          "id": "haishin-8",
+          "text": "今から10秒で笑わせます！",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "haishin-9",
+          "text": "初見さんいらっしゃい！3秒で覚える名前言って！",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "haishin-10",
+          "text": "コメント欄、今から地獄の大喜利タイムです",
+          "featured": true,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "haishin-11",
+          "text": "低音ボイス縛りで5分いきます",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "haishin-12",
+          "text": "今からリスナーのモノマネやります（怒らないでね）",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "haishin-13",
+          "text": "コメント全部英語で返しますチャレンジ",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "haishin-14",
+          "text": "1いいね＝1スクワット、地獄配信スタート！",
+          "featured": true,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "haishin-15",
+          "text": "寝落ち配信なのにテンションMAXでいきます",
+          "featured": false,
+          "createdAt": "2025-11-09"
         }
       ]
     },
@@ -209,6 +353,54 @@
           "text": "邪眼の力を舐めるなよ",
           "featured": false,
           "createdAt": "2025-11-08"
+        },
+        {
+          "id": "chuunibyou-8",
+          "text": "この手が光るとき、運命は動き出す…！",
+          "featured": true,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "chuunibyou-9",
+          "text": "闇よ、我に従え――覚醒の刻だ！",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "chuunibyou-10",
+          "text": "我が魂を代償に、真なる力を解き放つ！",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "chuunibyou-11",
+          "text": "貴様は運命に選ばれなかった哀れな存在だ",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "chuunibyou-12",
+          "text": "終焉を告げる黒翼が、今、羽ばたく",
+          "featured": true,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "chuunibyou-13",
+          "text": "我が力は常識を超越する",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "chuunibyou-14",
+          "text": "沈め…この世界ごと",
+          "featured": false,
+          "createdAt": "2025-11-09"
+        },
+        {
+          "id": "chuunibyou-15",
+          "text": "闇が笑う。滅びの宴の始まりだ…！",
+          "featured": false,
+          "createdAt": "2025-11-09"
         }
       ]
     }
