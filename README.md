@@ -5,7 +5,7 @@
 自作のモダンな静的Webサイト「Kotobako」です。  
 TailwindCSS を使ってレスポンシブ対応し、ちょっとカジュアルなデザインに仕上げました。
 
-[デモはこちら](https://raiton-boo.github.io/kotobako/)
+[Webサイトはこちら](https://raiton-boo.github.io/kotobako/)
 
 ---
 
