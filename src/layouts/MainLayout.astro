@@ -1,0 +1,60 @@
+---
+/**
+ * メインレイアウトコンポーネント
+ * 
+ * サイドバー、ヘッダー、フッターを含む共通レイアウト
+ * index.astro、category/[slug].astro、favorites.astro で使用
+ */
+import Layout from './Layout.astro';
+import Header from '../components/Header.astro';
+import CategoryNav from '../components/CategoryNav.astro';
+import FavoriteNotice from '../components/FavoriteNotice.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  showFavoriteNotice?: boolean;
+}
+
+const { title, description, ogImage, showFavoriteNotice = true } = Astro.props;
+---
+
+<Layout title={title} description={description} ogImage={ogImage}>
+  <style is:global>
+    /* プログレスバーのスタイル */
+    .progress-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, rgba(167, 139, 250, 0.3) 0%, transparent 0%);
+      border-radius: 1rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 1;
+    }
+
+    .progress-overlay.active {
+      opacity: 1;
+    }
+  </style>
+
+  {showFavoriteNotice && <FavoriteNotice />}
+  <Header />
+  
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex gap-8">
+      <CategoryNav />
+      
+      <main class="flex-1 min-w-0">
+        <slot />
+      </main>
+    </div>
+  </div>
+  
+  <Footer />
+</Layout>

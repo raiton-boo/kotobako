@@ -12,6 +12,7 @@ body {
   font-weight: 700;
 }
 
+/* スクロールバーのスタイリング */
 ::-webkit-scrollbar {
   width: 12px;
 }
@@ -27,4 +28,222 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #a0aec0;
+}
+
+/* セリフカードのアニメーション強化 */
+.serifu-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.serifu-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(167, 139, 250, 0.3),
+    0 10px 10px -5px rgba(167, 139, 250, 0.2);
+}
+
+.serifu-card:active {
+  transform: translateY(-4px) scale(1.01);
+}
+
+/* ボタンのアニメーション強化 */
+.action-button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.action-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(167, 139, 250, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.action-button:hover::before {
+  width: 120%;
+  height: 120%;
+}
+
+.action-button:hover {
+  transform: scale(1.15);
+  background-color: rgba(243, 244, 246, 1);
+}
+
+.action-button:active {
+  transform: scale(0.95);
+}
+
+/* お気に入りボタンのアニメーション */
+.favorite-btn {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.favorite-btn:hover {
+  transform: scale(1.2) rotate(10deg);
+}
+
+.favorite-btn:active {
+  transform: scale(0.9) rotate(-10deg);
+}
+
+.favorite-btn.added {
+  animation: heartBeat 0.5s ease;
+}
+
+.favorite-btn.removed {
+  animation: heartBreak 0.5s ease;
+}
+
+@keyframes heartBeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.3) rotate(10deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(-10deg);
+  }
+  75% {
+    transform: scale(1.2) rotate(5deg);
+  }
+}
+
+@keyframes heartBreak {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.8) rotate(-20deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* コピーボタンのアニメーション */
+.copy-btn {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.copy-btn:hover {
+  transform: scale(1.2) rotate(-5deg);
+}
+
+.copy-btn:active {
+  transform: scale(0.9);
+}
+
+.copy-btn.copied {
+  animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3) translateY(-5px);
+  }
+}
+
+/* 長押しプログレスバー */
+.progress-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 1;
+}
+
+.progress-overlay.active {
+  opacity: 1;
+}
+
+/* カード削除アニメーション */
+.card-removing {
+  animation: cardRemove 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@keyframes cardRemove {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(0.9) translateY(-10px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.7) translateY(20px);
+  }
+}
+
+/* カード追加アニメーション */
+.card-entering {
+  animation: cardEnter 0.4s cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+@keyframes cardEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* リップルエフェクト */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(167, 139, 250, 0.5);
+  transform: scale(0);
+  animation: rippleEffect 0.6s ease-out;
+  pointer-events: none;
+}
+
+@keyframes rippleEffect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* ローディングアニメーション */
+.loading {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* スムーズなページトランジション */
+@view-transition {
+  navigation: auto;
 }

@@ -1,0 +1,35 @@
+---
+/**
+ * パンくずリストコンポーネント
+ * 
+ * 現在のページ階層を表示する
+ */
+interface Props {
+  items: Array<{
+    label: string;
+    href?: string;
+    icon?: string;
+  }>;
+}
+
+const { items } = Astro.props;
+---
+
+<nav class="mb-6 text-sm text-gray-400" aria-label="パンくずリスト">
+  {items.map((item, index) => (
+    <>
+      {item.href ? (
+        <a href={item.href} class="hover:underline text-gray-600 transition-colors">
+          {item.icon && <span class="mr-1">{item.icon}</span>}
+          {item.label}
+        </a>
+      ) : (
+        <span class="text-gray-600">
+          {item.icon && <span class="mr-1">{item.icon}</span>}
+          {item.label}
+        </span>
+      )}
+      {index < items.length - 1 && <span class="mx-2">/</span>}
+    </>
+  ))}
+</nav>

@@ -1,24 +1,35 @@
 ---
+/**
+ * 検索バーコンポーネント
+ * 
+ * セリフを検索するための入力欄
+ */
 interface Props {
-  categoryName?: string;
+  placeholder?: string;
 }
 
-const { categoryName } = Astro.props;
-const placeholder = categoryName 
-  ? `${categoryName}のセリフを検索...`
-  : 'セリフを検索...';
+const { placeholder = 'セリフを検索...' } = Astro.props;
 ---
 
-<div class="mb-6">
-  <div class="relative">
-    <input
-      type="text"
-      id="search-input"
-      placeholder={placeholder}
-      class="w-full px-6 py-4 pr-12 rounded-full border-2 border-gray-200 bg-white text-gray-800 text-lg transition-all duration-300 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100"
+<div class="relative w-full">
+  <input
+    type="text"
+    id="search-input"
+    placeholder={placeholder}
+    class="w-full px-6 py-3 pr-12 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all duration-200"
+    aria-label="セリフを検索"
+  />
+  <svg
+    class="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
     />
-    <span class="absolute right-6 top-1/2 transform -translate-y-1/2 text-2xl pointer-events-none">
-      🔍
-    </span>
-  </div>
+  </svg>
 </div>

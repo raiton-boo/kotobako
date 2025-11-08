@@ -1,16 +1,28 @@
 ---
+/**
+ * ソートメニューコンポーネント
+ * 
+ * セリフの並び順を変更するセレクトボックス
+ */
+interface Props {
+  showFavoriteSort?: boolean; // お気に入り追加順のオプションを表示するか
+}
+
+const { showFavoriteSort = false } = Astro.props;
 ---
 
-<div class="mb-6 flex items-center gap-4">
-  <label class="text-sm font-bold text-gray-600">
-    並び替え:
-  </label>
-  <select
-    id="sort-select"
-    class="px-4 py-2 rounded-full border-2 border-gray-200 bg-white text-gray-800 transition-all duration-300 focus:outline-none focus:border-purple-400 cursor-pointer"
-  >
-    <option value="newest">新しい順</option>
-    <option value="oldest">古い順</option>
-    <option value="featured">おすすめ順</option>
-  </select>
-</div>
+<select
+  id="sort-select"
+  class="px-4 py-3 border border-gray-300 rounded-full text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all duration-200 cursor-pointer"
+  aria-label="並び替え"
+>
+  {showFavoriteSort && (
+    <>
+      <option value="added-newest">追加した新しい順</option>
+      <option value="added-oldest">追加した古い順</option>
+    </>
+  )}
+  <option value="newest" selected={!showFavoriteSort}>作成日が新しい順</option>
+  <option value="oldest">作成日が古い順</option>
+  <option value="featured">おすすめ順</option>
+</select>

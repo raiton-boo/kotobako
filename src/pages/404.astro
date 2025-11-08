@@ -1,85 +1,132 @@
 ---
+/**
+ * 404エラーページ
+ * 
+ * ページが見つからない場合に表示
+ */
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import categoriesData from '../data/categories.json';
+import type { CategoriesData } from '../types';
 
 const title = 'ページが見つかりません | ことば箱';
 const description = 'お探しのページは見つかりませんでした';
+
+const data = categoriesData as CategoriesData;
+const categories = data.categories;
 ---
 
 <Layout title={title} description={description}>
   <Header />
   
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-    <div class="mb-8">
-      <p class="text-9xl font-bold text-purple-400 mb-4">404</p>
-      <h1 class="text-4xl font-bold text-gray-800 mb-4">
-        ページが見つかりません
-      </h1>
-      <p class="text-xl text-gray-600 mb-8">
-        お探しのページは削除されたか、URLが間違っている可能性があります
-      </p>
-    </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="text-center mb-16">
+      <!-- 404メッセージ -->
+      <div class="mb-8">
+        <p class="text-9xl font-bold text-purple-400 mb-6 floating">404</p>
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+          ページが見つかりません
+        </h1>
+        <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          お探しのページは削除されたか、URLが間違っている可能性があります
+        </p>
+      </div>
 
-    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-      <a 
-        href="/kotobako" 
-        class="inline-flex items-center px-6 py-3 bg-purple-400 text-white rounded-full font-bold hover:bg-purple-500 transition-all duration-200 transform hover:scale-105"
-      >
-        <span class="mr-2">🏠</span>
-        ホームに戻る
-      </a>
-      
-      <a 
-        href="/kotobako/favorites" 
-        class="inline-flex items-center px-6 py-3 bg-white border-2 border-purple-400 text-purple-400 rounded-full font-bold hover:bg-purple-50 transition-all duration-200 transform hover:scale-105"
-      >
-        <span class="mr-2">💖</span>
-        お気に入りを見る
-      </a>
-    </div>
-
-    <div class="bg-gray-50 rounded-2xl p-8 max-w-2xl mx-auto">
-      <h2 class="text-2xl font-bold text-gray-800 mb-4">
-        カテゴリーから探す
-      </h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <!-- アクションボタン -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
         <a 
-          href="/kotobako/category/batsu-game" 
-          class="bg-white p-4 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
+          href="/kotobako" 
+          class="inline-flex items-center px-8 py-4 bg-purple-400 text-white rounded-full font-bold hover:bg-purple-500 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
         >
-          <p class="text-3xl mb-2">🎯</p>
-          <p class="font-bold text-gray-700">罰ゲーム</p>
+          <span class="text-2xl mr-2">🏠</span>
+          <span>ホームに戻る</span>
         </a>
         
         <a 
-          href="/kotobako/category/kokuhaku" 
-          class="bg-white p-4 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
+          href="/kotobako/favorites" 
+          class="inline-flex items-center px-8 py-4 bg-white border-2 border-purple-400 text-purple-400 rounded-full font-bold hover:bg-purple-50 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
         >
-          <p class="text-3xl mb-2">💕</p>
-          <p class="font-bold text-gray-700">告白</p>
-        </a>
-        
-        <a 
-          href="/kotobako/category/haishin" 
-          class="bg-white p-4 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
-        >
-          <p class="text-3xl mb-2">📺</p>
-          <p class="font-bold text-gray-700">配信</p>
-        </a>
-        
-        <a 
-          href="/kotobako/category/chuunibyou" 
-          class="bg-white p-4 rounded-xl hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1"
-        >
-          <p class="text-3xl mb-2">⚡</p>
-          <p class="font-bold text-gray-700">厨二病</p>
+          <span class="text-2xl mr-2">💖</span>
+          <span>お気に入りを見る</span>
         </a>
       </div>
     </div>
 
-    <div class="mt-12 text-gray-400 text-sm">
-      <p>問題が解決しない場合は、<a href="https://github.com/raiton-boo/kotobako/issues" class="text-purple-400 hover:underline">GitHubでお問い合わせ</a>ください</p>
+    <!-- カテゴリーセクション -->
+    <div class="bg-[linear-gradient(135deg,rgb(250,245,255)_0%,rgb(252,231,243)_100%)] rounded-3xl p-8 md:p-12 max-w-4xl mx-auto shadow-xl">
+      <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+        カテゴリーから探す
+      </h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {categories.map((category) => (
+          <a 
+            href={`/kotobako/category/${category.id}`}
+            class="bg-white p-6 rounded-2xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 group"
+          >
+            <p class="text-5xl mb-3 group-hover:scale-110 transition-transform duration-300">
+              {category.icon}
+            </p>
+            <p class="font-bold text-gray-700 text-lg">
+              {category.name}
+            </p>
+            <p class="text-sm text-gray-500 mt-2">
+              {category.serifu.length} 件
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <!-- おすすめセクション -->
+    <div class="mt-16 text-center">
+      <div class="bg-white rounded-3xl p-8 md:p-12 max-w-2xl mx-auto shadow-xl">
+        <p class="text-6xl mb-6">✨</p>
+        <h3 class="text-2xl font-bold text-gray-800 mb-4">
+          こんな機能もあります
+        </h3>
+        <div class="space-y-4 text-left">
+          <div class="flex items-start gap-4 p-4 bg-purple-50 rounded-xl">
+            <span class="text-3xl">🔍</span>
+            <div>
+              <p class="font-bold text-gray-800 mb-1">検索機能</p>
+              <p class="text-sm text-gray-600">キーワードで素早くセリフを見つけられます</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start gap-4 p-4 bg-pink-50 rounded-xl">
+            <span class="text-3xl">💖</span>
+            <div>
+              <p class="font-bold text-gray-800 mb-1">お気に入り機能</p>
+              <p class="text-sm text-gray-600">気に入ったセリフを保存して後で見返せます</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start gap-4 p-4 bg-blue-50 rounded-xl">
+            <span class="text-3xl">🔗</span>
+            <div>
+              <p class="font-bold text-gray-800 mb-1">リンク共有</p>
+              <p class="text-sm text-gray-600">セリフのURLをコピーして友達にシェアできます</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- フッターメッセージ -->
+    <div class="mt-16 text-center">
+      <p class="text-gray-400 text-sm">
+        問題が解決しない場合は、
+        <a 
+          href="https://github.com/raiton-boo/kotobako/issues" 
+          class="text-purple-400 hover:text-purple-500 hover:underline font-bold transition-colors"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          GitHubでお問い合わせ
+        </a>
+        ください
+      </p>
     </div>
   </div>
   
@@ -87,12 +134,17 @@ const description = 'お探しのページは見つかりませんでした';
 </Layout>
 
 <style>
+  /* 浮遊アニメーション */
   @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
+    0%, 100% { 
+      transform: translateY(0px);
+    }
+    50% { 
+      transform: translateY(-20px);
+    }
   }
   
-  h1 {
+  .floating {
     animation: float 3s ease-in-out infinite;
   }
 </style>

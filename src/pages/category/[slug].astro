@@ -1,255 +1,92 @@
 ---
-// filepath: src/pages/category/[slug].astro
-import Layout from '../../layouts/Layout.astro';
-import Header from '../../components/Header.astro';
-import CategoryNav from '../../components/CategoryNav.astro';
-import SerifuCard from '../../components/SerifuCard.astro';
+/**
+ * カテゴリーページ
+ * 
+ * 特定のカテゴリーに属するセリフを一覧表示
+ */
+import MainLayout from '../../layouts/MainLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import SearchBar from '../../components/SearchBar.astro';
 import SortMenu from '../../components/SortMenu.astro';
-import FavoriteNotice from '../../components/FavoriteNotice.astro';
-import Footer from '../../components/Footer.astro';
 import categoriesData from '../../data/categories.json';
+import type { Serifu, Category, CategoriesData } from '../../types';
 
+/**
+ * 静的パスを生成（ビルド時に全カテゴリーページを生成）
+ */
 export function getStaticPaths() {
-  const data = categoriesData as {
-    categories: Array<{
-      id: string;
-      name: string;
-      icon: string;
-      description: string;
-      serifu: Array<{
-        id: string;
-        text: string;
-        featured: boolean;
-        createdAt: string;
-      }>;
-    }>;
-  };
+  const data = categoriesData as CategoriesData;
 
-  return data.categories.map((category) => ({
+  return data.categories.map((category: Category) => ({
     params: { slug: category.id },
     props: { category },
   }));
 }
 
 const { category } = Astro.props;
+
+// セリフにカテゴリー情報を追加
+const serifuWithCategory = category.serifu.map((serifu: Serifu) => ({
+  ...serifu,
+  category: category.id,
+}));
+
 const title = `${category.name} | ことば箱`;
 const description = category.description;
 ---
 
-<Layout title={title} description={description}>
-  <FavoriteNotice />
-  <Header />
-  
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="flex gap-8">
-      <CategoryNav />
-      
-      <main class="flex-1 min-w-0">
-        <!-- パンくずリスト -->
-        <nav class="mb-6 text-sm text-gray-400">
-          <a href="/kotobako" class="hover:underline text-gray-600">ホーム</a>
-          <span class="mx-2">/</span>
-          <span class="text-gray-600">{category.icon} {category.name}</span>
-        </nav>
+<MainLayout title={title} description={description}>
+  <!-- パンくずリスト -->
+  <Breadcrumb 
+    items={[
+      { label: 'ホーム', href: '/kotobako', icon: '🏠' },
+      { label: category.name, icon: category.icon }
+    ]} 
+  />
 
-        <div class="mb-8">
-          <h1 class="text-3xl font-bold text-gray-800 mb-2">
-            {category.icon} {category.name}
-          </h1>
-          <p class="text-lg text-gray-600">
-            {category.description}
-          </p>
-          <p class="text-sm mt-2 text-gray-400">
-            全 {category.serifu.length} 件
-          </p>
-        </div>
-
-        <div class="flex flex-col md:flex-row gap-4 mb-6">
-          <div class="flex-1">
-            <SearchBar categoryName={category.name} />
-          </div>
-          <SortMenu />
-        </div>
-
-        <div id="serifu-list" class="grid gap-6 grid-cols-1 lg:grid-cols-2">
-          {category.serifu.map((serifu) => (
-            <div 
-              data-text={serifu.text.toLowerCase()}
-              data-date={serifu.createdAt}
-              data-featured={serifu.featured}
-            >
-              <SerifuCard
-                id={serifu.id}
-                text={serifu.text}
-                category={category.id}
-                featured={serifu.featured}
-                createdAt={serifu.createdAt}
-              />
-            </div>
-          ))}
-        </div>
-      </main>
-    </div>
+  <!-- カテゴリー情報 -->
+  <div class="mb-8">
+    <h1 class="text-4xl font-bold mb-3 text-gray-800">
+      {category.icon} {category.name}
+    </h1>
+    <p class="text-lg text-gray-600 mb-2">
+      {category.description}
+    </p>
+    <p class="text-sm text-gray-400">
+      全 {category.serifu.length} 件
+    </p>
   </div>
-  
-  <Footer />
-</Layout>
 
+  <!-- 検索バー & ソートメニュー -->
+  <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <div class="flex-1">
+      <SearchBar placeholder={`${category.name}のセリフを検索...`} />
+    </div>
+    <SortMenu showFavoriteSort={false} />
+  </div>
+
+  <!-- セリフグリッド -->
+  <div id="serifu-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- JavaScriptで動的に描画 -->
+  </div>
+</MainLayout>
 
 <script>
-  // 検索機能
-  const searchInput = document.getElementById('search-input') as HTMLInputElement;
-  const serifuList = document.getElementById('serifu-list');
-
-  searchInput?.addEventListener('input', (e) => {
-    const query = (e.target as HTMLInputElement).value.toLowerCase();
-    const items = serifuList?.querySelectorAll('[data-text]');
-    
-    items?.forEach((item) => {
-      const text = item.getAttribute('data-text') || '';
-      if (text.includes(query)) {
-        (item as HTMLElement).style.display = 'block';
-      } else {
-        (item as HTMLElement).style.display = 'none';
-      }
-    });
-  });
-
-  // ソート機能
-  const sortSelect = document.getElementById('sort-select') as HTMLSelectElement;
+  /**
+   * カテゴリーページの初期化
+   */
+  import { initializeCategoryPage } from '../../scripts/serifuCard';
+  import type { Serifu } from '../../types';
   
-  sortSelect?.addEventListener('change', (e) => {
-    const sortType = (e.target as HTMLSelectElement).value;
-    const items = Array.from(serifuList?.querySelectorAll('[data-date]') || []) as HTMLElement[];
+  // サーバーから渡されたセリフデータを取得
+  const serifuData = document.getElementById('category-serifu-data');
+  if (serifuData) {
+    const serifuList = JSON.parse(serifuData.textContent || '[]') as Array<Serifu & { category: string }>;
     
-    items.sort((a, b) => {
-      if (sortType === 'newest') {
-        return (b.getAttribute('data-date') || '').localeCompare(a.getAttribute('data-date') || '');
-      } else if (sortType === 'oldest') {
-        return (a.getAttribute('data-date') || '').localeCompare(b.getAttribute('data-date') || '');
-      } else if (sortType === 'featured') {
-        const aFeatured = a.getAttribute('data-featured') === 'true' ? 1 : 0;
-        const bFeatured = b.getAttribute('data-featured') === 'true' ? 1 : 0;
-        return bFeatured - aFeatured;
-      }
-      return 0;
-    });
-    
-    items.forEach(item => serifuList?.appendChild(item));
-  });
-
-  // トースト表示関数（最大3件まで、即座に削除）
-  function showToast(icon: string, message: string, color: string) {
-    const container = document.getElementById('toast-container');
-    if (!container) return;
-
-    // 既存のトーストが3件以上なら古いものを即座に削除
-    const existingToasts = container.querySelectorAll('.toast-item');
-    if (existingToasts.length >= 3) {
-      const oldestToast = existingToasts[0];
-      oldestToast.classList.remove('show');
-      // アニメーション完了を待たずにすぐ削除
-      setTimeout(() => {
-        oldestToast.remove();
-      }, 100);
-    }
-
-    // 新しいトーストを作成
-    const toast = document.createElement('div');
-    toast.className = 'toast-item';
-    toast.style.backgroundColor = color;
-    toast.innerHTML = `
-      <span class="toast-icon">${icon}</span>
-      <span>${message}</span>
-    `;
-
-    container.appendChild(toast);
-
-    // アニメーション開始
-    setTimeout(() => {
-      toast.classList.add('show');
-    }, 10);
-
-    // 2秒後に自動削除
-    setTimeout(() => {
-      toast.classList.remove('show');
-      setTimeout(() => {
-        toast.remove();
-      }, 300);
-    }, 2000);
-  }
-
-  // お気に入りボタン
-  document.querySelectorAll('.favorite-btn').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const id = btn.getAttribute('data-serifu-id');
-      
-      const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-      const index = favorites.indexOf(id);
-      
-      if (index > -1) {
-        favorites.splice(index, 1);
-        btn.textContent = '❤️';
-        showToast('💔', 'お気に入りから削除しました', '#ef4444');
-      } else {
-        favorites.push(id);
-        btn.textContent = '💖';
-        showToast('💖', 'お気に入りに追加しました', '#a855f7');
-      }
-      
-      localStorage.setItem('favorites', JSON.stringify(favorites));
-    });
-  });
-
-  // コピーボタン
-  document.querySelectorAll('.copy-btn').forEach((btn) => {
-    btn.addEventListener('click', async (e) => {
-      e.stopPropagation();
-      const id = btn.getAttribute('data-serifu-id');
-      const url = `${window.location.href.split('#')[0]}#serifu-${id}`;
-      
-      try {
-        await navigator.clipboard.writeText(url);
-        btn.textContent = '✅';
-        showToast('🔗', 'リンクをコピーしました', '#10b981');
-        setTimeout(() => {
-          btn.textContent = '🔗';
-        }, 2000);
-      } catch (err) {
-        alert('コピーに失敗しました');
-      }
-    });
-  });
-
-  // お気に入り状態を復元
-  const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-  document.querySelectorAll('.favorite-btn').forEach((btn) => {
-    const id = btn.getAttribute('data-serifu-id');
-    if (favorites.includes(id)) {
-      btn.textContent = '💖';
-    }
-  });
-
-  // URLハッシュで指定されたセリフにスクロール & ハイライト
-  if (window.location.hash) {
-    const targetId = window.location.hash.substring(1);
-    const targetElement = document.getElementById(targetId);
-    if (targetElement) {
-      setTimeout(() => {
-        targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        
-        // ハイライトエフェクト
-        targetElement.style.transition = 'all 0.3s ease';
-        targetElement.style.transform = 'scale(1.05)';
-        targetElement.style.boxShadow = '0 0 0 4px rgba(167, 139, 250, 0.5)';
-        
-        setTimeout(() => {
-          targetElement.style.transform = 'scale(1)';
-          targetElement.style.boxShadow = '';
-        }, 2000);
-      }, 100);
-    }
+    // カテゴリーページ初期化
+    initializeCategoryPage(serifuList);
   }
 </script>
+
+<!-- カテゴリーのセリフデータをJSONで埋め込み（JavaScriptから参照） -->
+<script type="application/json" id="category-serifu-data" set:html={JSON.stringify(serifuWithCategory)} />

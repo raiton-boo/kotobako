@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <script>
+      // GitHub Pages用のSPAリダイレクト処理
+      // 404エラーが発生したときに元のURLを保存してから404ページにリダイレクト
+      (function () {
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect != location.href) {
+          history.replaceState(null, null, redirect);
+        }
+      })();
+
+      // Astroの404ページにリダイレクト
+      window.location.replace('/kotobako/404');
+    </script>
+    <noscript>
+      <meta http-equiv="refresh" content="0;URL='/kotobako/404'" />
+    </noscript>
+  </head>
+  <body>
+    <p>Redirecting to 404 page...</p>
+  </body>
+</html>
