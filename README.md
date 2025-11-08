@@ -4,17 +4,16 @@
 
 <!-- Badges -->
 
-<div align="center">
-<!-- status badges -->
-[![GitHub stars](https://img.shields.io/github/stars/raiton-boo/kotobako?style=flat-square)](https://github.com/raiton-boo/kotobako/stargazers) [![Last commit](https://img.shields.io/github/last-commit/raiton-boo/kotobako?style=flat-square)](https://github.com/raiton-boo/kotobako/commits/main) [![Open issues](https://img.shields.io/github/issues/raiton-boo/kotobako?style=flat-square)](https://github.com/raiton-boo/kotobako/issues) [![Repo size](https://img.shields.io/github/repo-size/raiton-boo/kotobako?style=flat-square)](https://github.com/raiton-boo/kotobako) [![License](https://img.shields.io/github/license/raiton-boo/kotobako?style=flat-square)](https://github.com/raiton-boo/kotobako/blob/main/LICENSE)
+<p align="center">
 
-<br />
+<a href="https://github.com/raiton-boo/kotobako/stargazers"><img src="https://img.shields.io/github/stars/raiton-boo/kotobako?style=flat-square" alt="GitHub stars"/></a>
+<a href="https://github.com/raiton-boo/kotobako/commits/main"><img src="https://img.shields.io/github/last-commit/raiton-boo/kotobako?style=flat-square" alt="Last commit"/></a>
+<a href="https://github.com/raiton-boo/kotobako/issues"><img src="https://img.shields.io/github/issues/raiton-boo/kotobako?style=flat-square" alt="Open issues"/></a>
+<a href="https://github.com/raiton-boo/kotobako"><img src="https://img.shields.io/github/repo-size/raiton-boo/kotobako?style=flat-square" alt="Repo size"/></a>
+<a href="https://github.com/raiton-boo/kotobako/blob/main/LICENSE"><img src="https://img.shields.io/github/license/raiton-boo/kotobako?style=flat-square" alt="License"/></a>
+<a href="https://astro.build/"><img src="https://img.shields.io/badge/built%20with-Astro-FF5A5F?style=flat-square&logo=astro&logoColor=white" alt="Built with Astro"/></a>
 
-<!-- tech / meta badges -->
-
-[![Built with Astro](https://img.shields.io/badge/built%20with-Astro-FF5A5F?style=flat-square&logo=astro&logoColor=white)](https://astro.build/)
-
-</div>
+</p>
 
 Kotobako は「パーティーや配信で使える面白いセリフ集」を手軽に閲覧できる、モダンな静的サイトです。
 軽量な Astro ベースで、TailwindCSS によるレスポンシブデザインを採用しています。
@@ -40,6 +39,7 @@ Kotobako は「パーティーや配信で使える面白いセリフ集」を�
 
 - シンプルで軽量な静的サイト (Astro)
 - TailwindCSS を使ったカジュアルで拡張しやすいデザイン
+
 - モバイルファーストでレスポンシブ対応
 - GitHub Pages による簡単デプロイ
 
