@@ -1,7 +1,7 @@
 ---
 /**
  * メインレイアウトコンポーネント
- * 
+ *
  * デスクトップ: 既存のサイドバーレイアウト
  * モバイル/タブレット: ヘッダーにカテゴリーボタンを統合
  */
@@ -69,10 +69,10 @@ const currentCategoryData = currentCategory
       <div class="flex justify-between items-center">
         <!-- ロゴ -->
         <a href="/kotobako/" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <span class="text-2xl">📦</span>
+          <img src="/kotobako/kotobako_icon.png" alt="ことば箱アイコン" class="w-10 h-10 object-contain" />
           <h1 class="text-lg font-bold text-gray-800">ことば箱</h1>
         </a>
-        
+
         <!-- カテゴリーボタン -->
         <button
           id="mobile-category-btn"
@@ -104,7 +104,7 @@ const currentCategoryData = currentCategory
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div class="flex items-center justify-between">
         <a href="/kotobako/" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
-          <span class="text-3xl">📦</span>
+          <img src="/kotobako/kotobako_icon.png" alt="ことば箱アイコン" class="w-16 h-16 object-contain" />
           <div class="leading-tight">
             <h1 class="text-2xl font-bold text-gray-800">ことば箱</h1>
             <p class="text-sm text-gray-400">セリフコレクション</p>
@@ -129,7 +129,7 @@ const currentCategoryData = currentCategory
       id="mobile-overlay"
       class="absolute inset-0 bg-black bg-opacity-50"
     ></div>
-    
+
     <div
       id="mobile-sheet-content"
       class="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl transform translate-y-full transition-transform duration-300"
@@ -137,11 +137,11 @@ const currentCategoryData = currentCategory
       <div class="flex justify-center pt-3 pb-2">
         <div class="w-12 h-1 bg-gray-300 rounded-full"></div>
       </div>
-      
+
       <div class="px-6 py-4 border-b border-gray-200">
         <h3 class="font-bold text-xl text-gray-800">カテゴリー</h3>
       </div>
-      
+
       <div class="max-h-[60vh] overflow-y-auto pb-6">
         <!-- ホームリンク -->
         <a
@@ -226,7 +226,7 @@ const currentCategoryData = currentCategory
 
   <!-- デスクトップ用レイアウト（1024px以上） -->
   {showFavoriteNotice && <FavoriteNotice />}
-  
+
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="lg:flex lg:gap-8">
       <!-- デスクトップ用カテゴリーナビ -->
@@ -313,13 +313,13 @@ const currentCategoryData = currentCategory
           })}
         </nav>
       </aside>
-      
+
       <main class="flex-1 min-w-0">
         <slot />
       </main>
     </div>
   </div>
-  
+
   <Footer />
 
   <script>
@@ -328,18 +328,18 @@ const currentCategoryData = currentCategory
     const mobileSheet = document.getElementById('mobile-category-sheet');
     const mobileOverlay = document.getElementById('mobile-overlay');
     const mobileContent = document.getElementById('mobile-sheet-content');
-    
+
     let scrollPosition = 0;
-    
+
     function openMobileSheet() {
       if (mobileSheet && mobileContent) {
         // 現在のスクロール位置を保存
         scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-        
+
         // 背景のスクロールを防止
         document.body.classList.add('sheet-open');
         document.body.style.top = `-${scrollPosition}px`;
-        
+
         // ボトムシートを表示
         mobileSheet.classList.remove('opacity-0', 'invisible');
         setTimeout(() => {
@@ -347,15 +347,15 @@ const currentCategoryData = currentCategory
         }, 10);
       }
     }
-    
+
     function closeMobileSheet() {
       if (mobileSheet && mobileContent) {
         // ボトムシートを閉じる
         mobileContent.classList.add('translate-y-full');
-        
+
         setTimeout(() => {
           mobileSheet.classList.add('opacity-0', 'invisible');
-          
+
           // 背景のスクロールを復元
           document.body.classList.remove('sheet-open');
           document.body.style.top = '';
@@ -363,56 +363,56 @@ const currentCategoryData = currentCategory
         }, 300);
       }
     }
-    
+
     if (mobileBtn) {
       mobileBtn.addEventListener('click', openMobileSheet);
     }
-    
+
     if (mobileOverlay) {
       mobileOverlay.addEventListener('click', closeMobileSheet);
     }
-    
+
     // スワイプで閉じる（改善版）
     let startY = 0;
     let currentY = 0;
     let isDragging = false;
-    
+
     if (mobileContent) {
       mobileContent.addEventListener('touchstart', (e) => {
         const target = e.target as HTMLElement;
         const scrollContainer = mobileContent.querySelector('.max-h-\\[60vh\\]');
-        
+
         // スクロール可能なコンテナの一番上にいる場合のみドラッグを有効化
         if (scrollContainer && scrollContainer.scrollTop === 0) {
           startY = e.touches[0].clientY;
           isDragging = true;
         }
       });
-      
+
       mobileContent.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
-        
+
         currentY = e.touches[0].clientY;
         const diff = currentY - startY;
-        
+
         // 下方向のスワイプのみ許可
         if (diff > 0) {
           e.preventDefault();
           mobileContent.style.transform = `translateY(${diff}px)`;
         }
       });
-      
+
       mobileContent.addEventListener('touchend', () => {
         if (!isDragging) return;
-        
+
         const diff = currentY - startY;
-        
+
         if (diff > 100) {
           closeMobileSheet();
         } else {
           mobileContent.style.transform = '';
         }
-        
+
         isDragging = false;
       });
     }
@@ -423,7 +423,7 @@ const currentCategoryData = currentCategory
         // 配列形式とオブジェクト形式の両方に対応
         const favoritesRaw = localStorage.getItem('kotobako-favorites') || '[]';
         let count = 0;
-        
+
         try {
           const parsed = JSON.parse(favoritesRaw);
           if (Array.isArray(parsed)) {
@@ -434,23 +434,23 @@ const currentCategoryData = currentCategory
         } catch (e) {
           console.error('Failed to parse favorites:', e);
         }
-        
+
         console.log('Favorites count:', count, 'Raw:', favoritesRaw);
-        
+
         // モバイルヘッダーのバッジ（右下）
         const mobileBadge = document.getElementById('mobile-fav-badge');
         if (mobileBadge) {
           mobileBadge.textContent = count.toString();
           mobileBadge.style.display = count > 0 ? 'flex' : 'none';
         }
-        
+
         // モバイルシートのバッジ（お気に入り行）
         const sheetBadge = document.getElementById('mobile-sheet-fav-count');
         if (sheetBadge) {
           sheetBadge.textContent = count.toString();
           sheetBadge.style.display = count > 0 ? 'inline-block' : 'none';
         }
-        
+
         // デスクトップサイドバーのバッジ
         const desktopBadge = document.getElementById('desktop-fav-count');
         if (desktopBadge) {
@@ -461,16 +461,16 @@ const currentCategoryData = currentCategory
         console.error('Failed to update favorite count:', error);
       }
     }
-    
+
     // 初期表示
     updateFavoriteCount();
-    
+
     // storageイベントでリアルタイム更新
     window.addEventListener('storage', updateFavoriteCount);
-    
+
     // カスタムイベントでも更新
     window.addEventListener('favoritesUpdated', updateFavoriteCount);
-    
+
     // ページロード時にも実行
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', updateFavoriteCount);

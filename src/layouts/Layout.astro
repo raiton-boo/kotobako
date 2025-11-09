@@ -7,7 +7,7 @@ interface Props {
   ogImage?: string;
 }
 
-const { title, description = 'パーティーや配信で使える面白いセリフ集', ogImage = '/kotobako/og-image.png' } = Astro.props;
+const { title, description = 'パーティーや配信で使える面白いセリフ集', ogImage = '/kotobako/kotobako_icon.png' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const fullOgImage = new URL(ogImage, Astro.site);
 ---
