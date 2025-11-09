@@ -4,6 +4,13 @@ on:
   # mainブランチへのpush時に実行
   push:
     branches: [main]
+    # 特定のファイル/ディレクトリ変更時のみ実行
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/deploy.yml'
   # 手動実行も可能
   workflow_dispatch:
 
